@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hunger.mapper.ElCartMapper">
+    
+    <resultMap type="ElCart" id="ElCartResult">
+        <result property="id"    column="id"    />
+        <result property="isSupportCoupon"    column="is_support_coupon"    />
+        <result property="deliverTime"    column="deliver_time"    />
+        <result property="invoice"    column="invoice"    />
+        <result property="deliverTime1"    column="deliver_time1"    />
+        <result property="userName"    column="user_name"    />
+        <result property="deliverTime2"    column="deliver_time2"    />
+    </resultMap>
+
+
+</mapper>
