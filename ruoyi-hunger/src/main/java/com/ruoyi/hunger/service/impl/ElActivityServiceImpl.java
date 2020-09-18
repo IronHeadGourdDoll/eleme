@@ -10,7 +10,7 @@ import com.ruoyi.hunger.service.IElActivityService;
  * 外卖活动Service业务层处理
  *
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 @Service
 public class ElActivityServiceImpl extends ServiceImpl<ElActivityMapper, ElActivity> implements IElActivityService {

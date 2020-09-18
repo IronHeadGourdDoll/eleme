@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="monthSale"    column="month_sale"    />
         <result property="description"    column="description"    />
         <result property="rating"    column="rating"    />
+        <result property="categoryId"    column="category_id"    />
     </resultMap>
 
 

@@ -54,6 +54,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="地址id" prop="addressId">
+        <el-input
+          v-model="queryParams.addressId"
+          placeholder="请输入地址id"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -104,7 +113,7 @@
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="总价钱" align="center" prop="id" v-if="false"/>
+      <el-table-column label="地址id" align="center" prop="id" v-if="false"/>
       <el-table-column label="饭馆id" align="center" prop="restaurantId" />
       <el-table-column label="饭馆名" align="center" prop="restaurantName" />
       <el-table-column label="创建用户名" align="center" prop="userName" />
@@ -115,6 +124,7 @@
       </el-table-column>
       <el-table-column label="购买件数" align="center" prop="totalAmount" />
       <el-table-column label="总价钱" align="center" prop="totalQuality" />
+      <el-table-column label="地址id" align="center" prop="addressId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -169,6 +179,9 @@
         <el-form-item label="总价钱" prop="totalQuality">
           <el-input v-model="form.totalQuality" placeholder="请输入总价钱" />
         </el-form-item>
+        <el-form-item label="地址id" prop="addressId">
+          <el-input v-model="form.addressId" placeholder="请输入地址id" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -212,7 +225,8 @@ export default {
         userName: null,
         createdTime: null,
         totalAmount: null,
-        totalQuality: null
+        totalQuality: null,
+        addressId: null
       },
       // 表单参数
       form: {},
@@ -251,7 +265,8 @@ export default {
         userName: null,
         createdTime: null,
         totalAmount: null,
-        totalQuality: null
+        totalQuality: null,
+        addressId: null
       };
       this.resetForm("form");
     },

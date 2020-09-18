@@ -8,7 +8,7 @@
 
 		<!-- 商家列表部分 -->
 		<ul class="business">
-			<li v-for="item in shopList" @click="toBusinessInfo(item.id)">
+			<li v-for="item in foodList" @click="toFoodInfo(item.id)">
 				<div class="business-img">
 					<img :src="item.businessImg">
 					<div class="business-img-quantity" v-show="item.quantity>0">{{item.quantity}}</div>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-	import Footer from '../components/Footer.vue';
-	import { listShop, getShop, delShop, addShop, updateShop, exportShop } from "@/api/hunger/shop";
+	import Footer from '@/components/Footer.vue';
+	import { listFood, getFood, delFood, addFood, updateFood, exportFood } from "@/api/food";
 	
 	export default{
 		name:'BusinessList',
@@ -37,14 +37,16 @@
 			return {
 				orderTypeId: this.$route.query.orderTypeId,
 				// 商铺表格数据
-      			shopList: [],
+      			foodList: [],
 				businessArr:[],
-				user:{}
+				user:{},
+				total: 0
 			}
 		},
 		created() {
-			listShop(this.queryParams).then(response => {
-				this.shopList = response.rows;
+			listFood(this.queryParams).then(response => {
+				this.foodList = response.rows;
+				this.total = response.total;
 			});
 			// this.user = this.$getSessionStorage('user');
 			

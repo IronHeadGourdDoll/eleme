@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createdTime"    column="created_time"    />
         <result property="totalAmount"    column="total_amount"    />
         <result property="totalQuality"    column="total_quality"    />
+        <result property="addressId"    column="address_id"    />
     </resultMap>
 
 

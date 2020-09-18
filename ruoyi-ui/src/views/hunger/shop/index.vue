@@ -1,100 +1,143 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="${comment}" prop="name">
+      <el-form-item label="商铺名" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入${comment}"
+          placeholder="请输入商铺名"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="address">
+      <el-form-item label="省" prop="provinceName">
         <el-input
-          v-model="queryParams.address"
-          placeholder="请输入${comment}"
+          v-model="queryParams.provinceName"
+          placeholder="请输入省"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="latitude">
+      <el-form-item label="市" prop="cityName">
+        <el-input
+          v-model="queryParams.cityName"
+          placeholder="请输入市"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="县/区" prop="areaName">
+        <el-input
+          v-model="queryParams.areaName"
+          placeholder="请输入县/区"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="详细地址" prop="detail">
+        <el-input
+          v-model="queryParams.detail"
+          placeholder="请输入详细地址"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="纬度" prop="latitude">
         <el-input
           v-model="queryParams.latitude"
-          placeholder="请输入${comment}"
+          placeholder="请输入纬度"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="longitude">
+      <el-form-item label="经度" prop="longitude">
         <el-input
           v-model="queryParams.longitude"
-          placeholder="请输入${comment}"
+          placeholder="请输入经度"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="phone">
+      <el-form-item label="电话" prop="phone">
         <el-input
           v-model="queryParams.phone"
-          placeholder="请输入${comment}"
+          placeholder="请输入电话"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="imagePath">
+      <el-form-item label="图片路径" prop="imagePath">
         <el-input
           v-model="queryParams.imagePath"
-          placeholder="请输入${comment}"
+          placeholder="请输入图片路径"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择${comment}" clearable size="small">
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
-      <el-form-item label="${comment}" prop="promotionInfo">
+      <el-form-item label="促销信息" prop="promotionInfo">
         <el-input
           v-model="queryParams.promotionInfo"
-          placeholder="请输入${comment}"
+          placeholder="请输入促销信息"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="description">
+      <el-form-item label="描述" prop="description">
         <el-input
           v-model="queryParams.description"
-          placeholder="请输入${comment}"
+          placeholder="请输入描述"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="deliveryMode">
+      <el-form-item label="配送方式" prop="deliveryMode">
         <el-input
           v-model="queryParams.deliveryMode"
-          placeholder="请输入${comment}"
+          placeholder="请输入配送方式"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="isNew">
+      <el-form-item label="新店" prop="isNew">
         <el-input
           v-model="queryParams.isNew"
-          placeholder="请输入${comment}"
+          placeholder="请输入新店"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="营业开始时间" prop="startTime">
+        <el-date-picker clearable size="small" style="width: 200px"
+          v-model="queryParams.startTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择营业开始时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="营业结束时间" prop="endTime">
+        <el-date-picker clearable size="small" style="width: 200px"
+          v-model="queryParams.endTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择营业结束时间">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -146,18 +189,31 @@
 
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="${comment}" align="center" prop="id" v-if="false"/>
-      <el-table-column label="${comment}" align="center" prop="name" />
-      <el-table-column label="${comment}" align="center" prop="address" />
-      <el-table-column label="${comment}" align="center" prop="latitude" />
-      <el-table-column label="${comment}" align="center" prop="longitude" />
-      <el-table-column label="${comment}" align="center" prop="phone" />
-      <el-table-column label="${comment}" align="center" prop="imagePath" />
-      <el-table-column label="${comment}" align="center" prop="status" />
-      <el-table-column label="${comment}" align="center" prop="promotionInfo" />
-      <el-table-column label="${comment}" align="center" prop="description" />
-      <el-table-column label="${comment}" align="center" prop="deliveryMode" />
-      <el-table-column label="${comment}" align="center" prop="isNew" />
+      <el-table-column label="营业结束时间" align="center" prop="id" v-if="false"/>
+      <el-table-column label="商铺名" align="center" prop="name" />
+      <el-table-column label="省" align="center" prop="provinceName" />
+      <el-table-column label="市" align="center" prop="cityName" />
+      <el-table-column label="县/区" align="center" prop="areaName" />
+      <el-table-column label="详细地址" align="center" prop="detail" />
+      <el-table-column label="纬度" align="center" prop="latitude" />
+      <el-table-column label="经度" align="center" prop="longitude" />
+      <el-table-column label="电话" align="center" prop="phone" />
+      <el-table-column label="图片路径" align="center" prop="imagePath" />
+      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="促销信息" align="center" prop="promotionInfo" />
+      <el-table-column label="描述" align="center" prop="description" />
+      <el-table-column label="配送方式" align="center" prop="deliveryMode" />
+      <el-table-column label="新店" align="center" prop="isNew" />
+      <el-table-column label="营业开始时间" align="center" prop="startTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.startTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="营业结束时间" align="center" prop="endTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -189,40 +245,65 @@
     <!-- 添加或修改商铺对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="${comment}" prop="name">
-          <el-input v-model="form.name" placeholder="请输入${comment}" />
+        <el-form-item label="商铺名" prop="name">
+          <el-input v-model="form.name" placeholder="请输入商铺名" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="address">
-          <el-input v-model="form.address" placeholder="请输入${comment}" />
+        <el-form-item label="省" prop="provinceName">
+          <el-input v-model="form.provinceName" placeholder="请输入省" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="latitude">
-          <el-input v-model="form.latitude" placeholder="请输入${comment}" />
+        <el-form-item label="市" prop="cityName">
+          <el-input v-model="form.cityName" placeholder="请输入市" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="longitude">
-          <el-input v-model="form.longitude" placeholder="请输入${comment}" />
+        <el-form-item label="县/区" prop="areaName">
+          <el-input v-model="form.areaName" placeholder="请输入县/区" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入${comment}" />
+        <el-form-item label="详细地址" prop="detail">
+          <el-input v-model="form.detail" placeholder="请输入详细地址" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="imagePath">
-          <el-input v-model="form.imagePath" placeholder="请输入${comment}" />
+        <el-form-item label="纬度" prop="latitude">
+          <el-input v-model="form.latitude" placeholder="请输入纬度" />
         </el-form-item>
-        <el-form-item label="${comment}">
+        <el-form-item label="经度" prop="longitude">
+          <el-input v-model="form.longitude" placeholder="请输入经度" />
+        </el-form-item>
+        <el-form-item label="电话" prop="phone">
+          <el-input v-model="form.phone" placeholder="请输入电话" />
+        </el-form-item>
+        <el-form-item label="图片路径" prop="imagePath">
+          <el-input v-model="form.imagePath" placeholder="请输入图片路径" />
+        </el-form-item>
+        <el-form-item label="状态">
           <el-radio-group v-model="form.status">
             <el-radio label="1">请选择字典生成</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="${comment}" prop="promotionInfo">
-          <el-input v-model="form.promotionInfo" placeholder="请输入${comment}" />
+        <el-form-item label="促销信息" prop="promotionInfo">
+          <el-input v-model="form.promotionInfo" placeholder="请输入促销信息" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="description">
-          <el-input v-model="form.description" placeholder="请输入${comment}" />
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="form.description" placeholder="请输入描述" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="deliveryMode">
-          <el-input v-model="form.deliveryMode" placeholder="请输入${comment}" />
+        <el-form-item label="配送方式" prop="deliveryMode">
+          <el-input v-model="form.deliveryMode" placeholder="请输入配送方式" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="isNew">
-          <el-input v-model="form.isNew" placeholder="请输入${comment}" />
+        <el-form-item label="新店" prop="isNew">
+          <el-input v-model="form.isNew" placeholder="请输入新店" />
+        </el-form-item>
+        <el-form-item label="营业开始时间" prop="startTime">
+          <el-date-picker clearable size="small" style="width: 200px"
+            v-model="form.startTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择营业开始时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="营业结束时间" prop="endTime">
+          <el-date-picker clearable size="small" style="width: 200px"
+            v-model="form.endTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择营业结束时间">
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -263,7 +344,10 @@ export default {
         pageNum: 1,
         pageSize: 10,
         name: null,
-        address: null,
+        provinceName: null,
+        cityName: null,
+        areaName: null,
+        detail: null,
         latitude: null,
         longitude: null,
         phone: null,
@@ -272,7 +356,9 @@ export default {
         promotionInfo: null,
         description: null,
         deliveryMode: null,
-        isNew: null
+        isNew: null,
+        startTime: null,
+        endTime: null
       },
       // 表单参数
       form: {},
@@ -304,7 +390,10 @@ export default {
       this.form = {
         id: null,
         name: null,
-        address: null,
+        provinceName: null,
+        cityName: null,
+        areaName: null,
+        detail: null,
         latitude: null,
         longitude: null,
         phone: null,
@@ -313,7 +402,9 @@ export default {
         promotionInfo: null,
         description: null,
         deliveryMode: null,
-        isNew: null
+        isNew: null,
+        startTime: null,
+        endTime: null
       };
       this.resetForm("form");
     },

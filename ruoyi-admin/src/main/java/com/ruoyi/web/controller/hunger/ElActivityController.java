@@ -1,28 +1,36 @@
-package com.ruoyi.web.controller.hunger;
+package com.ruoyi.hunger.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ruoyi.hunger.domain.ElActivity;
-import com.ruoyi.hunger.service.IElActivityService;
+
+import java.util.List;
+import java.util.Arrays;
+
+import com.ruoyi.common.utils.StringUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.hunger.domain.ElActivity;
+import com.ruoyi.hunger.service.IElActivityService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
+import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 外卖活动Controller
  * 
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -34,7 +42,6 @@ public class ElActivityController extends BaseController {
     /**
      * 查询外卖活动列表
      */
-    @PreAuthorize("@ss.hasPermi('hunger:activity:list')")
     @GetMapping("/list")
     public TableDataInfo list(ElActivity elActivity)
     {

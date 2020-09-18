@@ -10,7 +10,7 @@ import com.ruoyi.hunger.service.IElCityService;
  * 城市Service业务层处理
  *
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 @Service
 public class ElCityServiceImpl extends ServiceImpl<ElCityMapper, ElCity> implements IElCityService {

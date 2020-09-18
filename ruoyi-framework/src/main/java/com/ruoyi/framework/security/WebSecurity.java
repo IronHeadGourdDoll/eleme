@@ -32,4 +32,9 @@ public class WebSecurity {
     public boolean checkId( int id) {
         return true;
     }
+
+
+    public boolean check(Authentication authentication) {
+        return true;
+    }
 }

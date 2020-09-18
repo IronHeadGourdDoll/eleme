@@ -7,7 +7,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="ElShop" id="ElShopResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
-        <result property="address"    column="address"    />
+        <result property="provinceName"    column="province_name"    />
+        <result property="cityName"    column="city_name"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="detail"    column="detail"    />
         <result property="latitude"    column="latitude"    />
         <result property="longitude"    column="longitude"    />
         <result property="phone"    column="phone"    />
@@ -17,6 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="description"    column="description"    />
         <result property="deliveryMode"    column="delivery_mode"    />
         <result property="isNew"    column="is_new"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
     </resultMap>
 
 

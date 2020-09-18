@@ -9,15 +9,17 @@ import lombok.experimental.Accessors;
 import com.ruoyi.common.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
+import com.baomidou.mybatisplus.annotation.IdType;
 import java.io.Serializable;
 import java.util.Date;
+import java.math.BigDecimal;
+import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 购物车对象 el_cart
  * 
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 @Data
 @ToString

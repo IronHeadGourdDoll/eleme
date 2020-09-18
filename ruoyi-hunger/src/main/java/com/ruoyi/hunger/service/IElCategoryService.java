@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 分类信息Service接口
  *
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 public interface IElCategoryService extends IService<ElCategory> {
 

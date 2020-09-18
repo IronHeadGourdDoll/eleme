@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from '../store'
 
 /**
  * 字符权限校验

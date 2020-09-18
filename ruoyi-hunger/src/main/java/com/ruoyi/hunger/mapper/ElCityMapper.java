@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 城市Mapper接口
  *
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 public interface ElCityMapper extends BaseMapper<ElCity> {
 

@@ -1,5 +1,6 @@
 package com.ruoyi.hunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,17 @@ import lombok.experimental.Accessors;
 import com.ruoyi.common.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
+import com.baomidou.mybatisplus.annotation.IdType;
 import java.io.Serializable;
+import java.util.Date;
+import java.math.BigDecimal;
+import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 食物对象 el_food
  * 
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 @Data
 @ToString
@@ -67,4 +71,8 @@ private static final long serialVersionUID=1L;
     /** 评分 */
     @Excel(name = "评分")
     private String rating;
+
+    /** 分类id */
+    @Excel(name = "分类id")
+    private Long categoryId;
 }

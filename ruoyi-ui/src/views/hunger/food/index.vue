@@ -82,6 +82,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="分类id" prop="categoryId">
+        <el-input
+          v-model="queryParams.categoryId"
+          placeholder="请输入分类id"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -132,7 +141,7 @@
 
     <el-table v-loading="loading" :data="foodList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="评分" align="center" prop="id" v-if="false"/>
+      <el-table-column label="分类id" align="center" prop="id" v-if="false"/>
       <el-table-column label="名字" align="center" prop="name" />
       <el-table-column label="图片" align="center" prop="imagePath" />
       <el-table-column label="活动" align="center" prop="activity" />
@@ -142,6 +151,7 @@
       <el-table-column label="月销量" align="center" prop="monthSale" />
       <el-table-column label="描述" align="center" prop="description" />
       <el-table-column label="评分" align="center" prop="rating" />
+      <el-table-column label="分类id" align="center" prop="categoryId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -200,6 +210,9 @@
         <el-form-item label="评分" prop="rating">
           <el-input v-model="form.rating" placeholder="请输入评分" />
         </el-form-item>
+        <el-form-item label="分类id" prop="categoryId">
+          <el-input v-model="form.categoryId" placeholder="请输入分类id" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -246,7 +259,8 @@ export default {
         ratingCount: null,
         monthSale: null,
         description: null,
-        rating: null
+        rating: null,
+        categoryId: null
       },
       // 表单参数
       form: {},
@@ -288,7 +302,8 @@ export default {
         ratingCount: null,
         monthSale: null,
         description: null,
-        rating: null
+        rating: null,
+        categoryId: null
       };
       this.resetForm("form");
     },

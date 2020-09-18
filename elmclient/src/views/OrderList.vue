@@ -9,10 +9,10 @@
 		<!-- 订单列表部分 -->
 		<h3>未支付订单信息：</h3>
 		<ul class="order">
-			<li v-for="item in orderArr" v-if="item.orderState==0">
+			<li v-for="item in orderList" v-if="item.orderList==0">
 				<div class="order-info">
 					<p>
-						{{item.business.businessName}}
+						{{item.restaurantName}}
 						<i class="fa fa-caret-down" @click="detailetShow(item)"></i>
 					</p>
 					<div class="order-info-right">
@@ -20,14 +20,14 @@
 						<div class="order-info-right-icon">去支付</div>
 					</div>
 				</div>
-				<ul class="order-detailet" v-show="item.isShowDetailet">
-					<li v-for="odItem in item.list">
+				<ul class="order-detailet" v-show="item.orderList">
+					<!-- <li v-for="odItem in item.list">
 						<p>{{odItem.food.foodName}} x {{odItem.quantity}}</p>
 						<p>&#165;{{odItem.food.foodPrice*odItem.quantity}}</p>
-					</li>
+					</li> -->
 					<li>
 						<p>配送费</p>
-						<p>&#165;{{item.business.deliveryPrice}}</p>
+						<p>&#165;{{item.orderTotal}}</p>
 					</li>
 				</ul>
 			</li>
@@ -35,10 +35,10 @@
 
 		<h3>已支付订单信息：</h3>
 		<ul class="order">
-			<li v-for="item in orderArr" v-if="item.orderState==1">
+			<li v-for="item in orderList" v-if="item.orderList==1">
 				<div class="order-info">
 					<p>
-						{{item.business.businessName}}
+						{{item.restaurantName}}
 						<i class="fa fa-caret-down" @click="detailetShow(item)"></i>
 					</p>
 					<div class="order-info-right">
@@ -46,13 +46,13 @@
 					</div>
 				</div>
 				<ul class="order-detailet" v-show="item.isShowDetailet">
-					<li v-for="odItem in item.list">
+					<!-- <li v-for="odItem in item.list">
 						<p>{{odItem.food.foodName}} x {{odItem.quantity}}</p>
 						<p>&#165;{{odItem.food.foodPrice*odItem.quantity}}</p>
-					</li>
+					</li> -->
 					<li>
 						<p>配送费</p>
-						<p>&#165;{{item.business.deliveryPrice}}</p>
+						<p>&#165;{{item.totalQuality}}</p>
 					</li>
 				</ul>
 			</li>
@@ -66,34 +66,30 @@
 
 <script>
 	import Footer from '../components/Footer.vue';
-	
+	import { listOrder, getOrder, delOrder, addOrder, updateOrder, exportOrder } from "@/api/order";
+
 	export default{
 		name:'OrderList',
 		data(){
 			return {
-				orderArr:[],
-				user:{}
+				// 总条数
+				total: 0,
+				// 订单表格数据
+				orderList: [],
 			}
 		},
 		created() {
-			this.user = this.$getSessionStorage('user');
-			
-			this.$axios.post('OrdersController/listOrdersByUserId',this.$qs.stringify({
-				userId:this.user.userId
-			})).then(response=>{
-				let result = response.data;
-				for(let orders of result){
-					orders.isShowDetailet = false;
-				}
-				this.orderArr = result;
-			}).catch(error=>{
-				console.error(error);
-			});
+			this.getList();
 		},
-		methods:{
-			detailetShow(orders){
-				orders.isShowDetailet = !orders.isShowDetailet;
-			}
+		methods: {
+			/** 查询订单列表 */
+			getList() {
+			this.loading = true;
+			listOrder(this.queryParams).then(response => {
+				this.orderList = response.rows;
+				this.total = response.total;
+			});
+			},
 		},
 		components:{
 			Footer

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 评分Service接口
  *
  * @author gourddoll
- * @date 2020-09-16
+ * @date 2020-09-17
  */
 public interface IElRatingService extends IService<ElRating> {
 

@@ -8,17 +8,19 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: process.env.VUE_APP_BASE_API,
+  //baseURL: process.env.VUE_APP_BASE_API,//无效？
+  baseURL: `http://localhost:8080`,
   // 超时
   timeout: 10000
 })
+
 // request拦截器
 service.interceptors.request.use(config => {
-  // 是否需要设置 token
+  // 是否需要设置 token，初始没有token
   const isToken = (config.headers || {}).isToken === false
-  if (getToken() && !isToken) {
+  if (getToken() && !isToken) { // 从vuex存储中获得数据
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-    console.log("token:" + getToken())
+    console.log("request token:" + getToken())
   }
   return config
 }, error => {
