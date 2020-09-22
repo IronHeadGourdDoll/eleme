@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -27,10 +27,10 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 订单Controller
+ * 订单总Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -40,44 +40,65 @@ public class ElOrderController extends BaseController {
     private final IElOrderService iElOrderService;
 
     /**
-     * 查询订单列表
+     * 查询订单总列表
      */
-    //@PreAuthorize("@ss.hasPermi('hunger:order:list')")
+    @PreAuthorize("@ss.hasPermi('hunger:order:list')")
     @GetMapping("/list")
     public TableDataInfo list(ElOrder elOrder)
     {
         startPage();
         LambdaQueryWrapper<ElOrder> lqw = new LambdaQueryWrapper<ElOrder>();
-        if (elOrder.getRestaurantId() != null){
-            lqw.eq(ElOrder::getRestaurantId ,elOrder.getRestaurantId());
-        }
-        if (StringUtils.isNotBlank(elOrder.getRestaurantName())){
-            lqw.like(ElOrder::getRestaurantName ,elOrder.getRestaurantName());
-        }
         if (StringUtils.isNotBlank(elOrder.getUserName())){
             lqw.like(ElOrder::getUserName ,elOrder.getUserName());
         }
         if (elOrder.getCreatedTime() != null){
             lqw.eq(ElOrder::getCreatedTime ,elOrder.getCreatedTime());
         }
-        if (StringUtils.isNotBlank(elOrder.getTotalAmount())){
-            lqw.eq(ElOrder::getTotalAmount ,elOrder.getTotalAmount());
+        if (elOrder.getTotalCount() != null){
+            lqw.eq(ElOrder::getTotalCount ,elOrder.getTotalCount());
         }
-        if (StringUtils.isNotBlank(elOrder.getTotalQuality())){
-            lqw.eq(ElOrder::getTotalQuality ,elOrder.getTotalQuality());
+        if (elOrder.getTotalPrice() != null){
+            lqw.eq(ElOrder::getTotalPrice ,elOrder.getTotalPrice());
+        }
+        if (elOrder.getPreMoney() != null){
+            lqw.eq(ElOrder::getPreMoney ,elOrder.getPreMoney());
+        }
+        if (elOrder.getPostFee() != null){
+            lqw.eq(ElOrder::getPostFee ,elOrder.getPostFee());
+        }
+        if (elOrder.getPayMoney() != null){
+            lqw.eq(ElOrder::getPayMoney ,elOrder.getPayMoney());
+        }
+        if (elOrder.getPayStatus() != null){
+            lqw.eq(ElOrder::getPayStatus ,elOrder.getPayStatus());
+        }
+        if (StringUtils.isNotBlank(elOrder.getPayType())){
+            lqw.eq(ElOrder::getPayType ,elOrder.getPayType());
+        }
+        if (elOrder.getConsignTime() != null){
+            lqw.eq(ElOrder::getConsignTime ,elOrder.getConsignTime());
+        }
+        if (elOrder.getArriveTime() != null){
+            lqw.eq(ElOrder::getArriveTime ,elOrder.getArriveTime());
         }
         if (elOrder.getAddressId() != null){
             lqw.eq(ElOrder::getAddressId ,elOrder.getAddressId());
+        }
+        if (elOrder.getEndTime() != null){
+            lqw.eq(ElOrder::getEndTime ,elOrder.getEndTime());
+        }
+        if (StringUtils.isNotBlank(elOrder.getInvoice())){
+            lqw.eq(ElOrder::getInvoice ,elOrder.getInvoice());
         }
         List<ElOrder> list = iElOrderService.list(lqw);
         return getDataTable(list);
     }
 
     /**
-     * 导出订单列表
+     * 导出订单总列表
      */
     @PreAuthorize("@ss.hasPermi('hunger:order:export')" )
-    @Log(title = "订单" , businessType = BusinessType.EXPORT)
+    @Log(title = "订单总" , businessType = BusinessType.EXPORT)
     @GetMapping("/export" )
     public AjaxResult export(ElOrder elOrder) {
         LambdaQueryWrapper<ElOrder> lqw = new LambdaQueryWrapper<ElOrder>(elOrder);
@@ -87,7 +108,7 @@ public class ElOrderController extends BaseController {
     }
 
     /**
-     * 获取订单详细信息
+     * 获取订单总详细信息
      */
     @PreAuthorize("@ss.hasPermi('hunger:order:query')" )
     @GetMapping(value = "/{id}" )
@@ -96,30 +117,30 @@ public class ElOrderController extends BaseController {
     }
 
     /**
-     * 新增订单
+     * 新增订单总
      */
     @PreAuthorize("@ss.hasPermi('hunger:order:add')" )
-    @Log(title = "订单" , businessType = BusinessType.INSERT)
+    @Log(title = "订单总" , businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ElOrder elOrder) {
         return toAjax(iElOrderService.save(elOrder) ? 1 : 0);
     }
 
     /**
-     * 修改订单
+     * 修改订单总
      */
     @PreAuthorize("@ss.hasPermi('hunger:order:edit')" )
-    @Log(title = "订单" , businessType = BusinessType.UPDATE)
+    @Log(title = "订单总" , businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ElOrder elOrder) {
         return toAjax(iElOrderService.updateById(elOrder) ? 1 : 0);
     }
 
     /**
-     * 删除订单
+     * 删除订单总
      */
     @PreAuthorize("@ss.hasPermi('hunger:order:remove')" )
-    @Log(title = "订单" , businessType = BusinessType.DELETE)
+    @Log(title = "订单总" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(iElOrderService.removeByIds(Arrays.asList(ids)) ? 1 : 0);

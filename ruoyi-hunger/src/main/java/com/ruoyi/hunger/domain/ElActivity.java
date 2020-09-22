@@ -19,7 +19,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 外卖活动对象 el_activity
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Data
 @ToString

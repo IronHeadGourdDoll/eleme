@@ -35,7 +35,7 @@ const routes = [{
 		name: 'Login',
 		component: Login
 	}, {
-		path: '/orders',
+		path: '/orders/:id',
 		name: 'Orders',
 		component: Orders
 	}, {

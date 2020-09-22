@@ -64,6 +64,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="默认" prop="isDefault">
+        <el-input
+          v-model="queryParams.isDefault"
+          placeholder="请输入默认"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -114,7 +123,7 @@
 
     <el-table v-loading="loading" :data="addressList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="收货电话" align="center" prop="id" v-if="false"/>
+      <el-table-column label="默认" align="center" prop="id" v-if="false"/>
       <el-table-column label="详细地址" align="center" prop="detail" />
       <el-table-column label="用户名地址" align="center" prop="userName" />
       <el-table-column label="省" align="center" prop="provinceName" />
@@ -122,6 +131,7 @@
       <el-table-column label="区县" align="center" prop="countyName" />
       <el-table-column label="收货人" align="center" prop="receiveName" />
       <el-table-column label="收货电话" align="center" prop="receivePhone" />
+      <el-table-column label="默认" align="center" prop="isDefault" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -174,6 +184,9 @@
         <el-form-item label="收货电话" prop="receivePhone">
           <el-input v-model="form.receivePhone" placeholder="请输入收货电话" />
         </el-form-item>
+        <el-form-item label="默认" prop="isDefault">
+          <el-input v-model="form.isDefault" placeholder="请输入默认" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -218,7 +231,8 @@ export default {
         cityName: null,
         countyName: null,
         receiveName: null,
-        receivePhone: null
+        receivePhone: null,
+        isDefault: null
       },
       // 表单参数
       form: {},
@@ -255,7 +269,8 @@ export default {
         cityName: null,
         countyName: null,
         receiveName: null,
-        receivePhone: null
+        receivePhone: null,
+        isDefault: null
       };
       this.resetForm("form");
     },

@@ -10,7 +10,7 @@ import com.ruoyi.hunger.service.IElCartService;
  * 购物车Service业务层处理
  *
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Service
 public class ElCartServiceImpl extends ServiceImpl<ElCartMapper, ElCart> implements IElCartService {

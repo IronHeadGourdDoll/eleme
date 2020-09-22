@@ -10,33 +10,23 @@
 		<div class="order-info">
 			<h5>订单配送至：</h5>
 			<div class="order-info-address" @click="toUserAddress">
-				<p>{{deliveryaddress!=null?deliveryaddress.address:'请选择送货地址'}}</p>
+				<p>{{address.provinceName}}省{{address.cityName}}市{{address.countyName}}区{{address.detail}}</p>
 				<i class="fa fa-angle-right"></i>
 			</div>
-			<p>{{user.userName}}{{user.userSex | sexFilter}} {{user.userId}}</p>
+			<div>
+				<span>收件人：{{address.receiveName}}</span>
+				<span style="margin-left:50px;">收件人电话：{{address.receivePhone}}</span>
+			</div>
 		</div>
 
-		<h3>{{business.businessName}}</h3>
-
-		<!-- 订单明细部分 -->
-		<ul class="order-detailed">
-			<li v-for="item in cartArr">
-				<div class="order-detailed-left">
-					<img :src="item.food.foodImg">
-					<p>{{item.food.foodName}} x {{item.quantity}}</p>
-				</div>
-				<p>&#165;{{item.food.foodPrice*item.quantity}}</p>
-			</li>
-		</ul>
-		<div class="order-deliveryfee">
-			<p>配送费</p>
-			<p>&#165;{{business.deliveryPrice}}</p>
+		<h3>{{order.name}}</h3>
+		<div class="order-item">
 		</div>
 
 		<!-- 合计部分 -->
 		<div class="total">
 			<div class="total-left">
-				&#165;{{totalPrice}}
+				&#165;{{order.payMoney}}
 			</div>
 			<div class="total-right" @click="toPayment">
 				去支付
@@ -46,39 +36,45 @@
 </template>
 
 <script>
+import { listOrder, getOrder, delOrder, addOrder, updateOrder, exportOrder } from "@/api/order";
+import { listOrderItem, getOrderItem, delOrderItem, addOrderItem, updateOrderItem, exportOrderItem } from "@/api/orderItem";
+import { listAddress, getAddress, delAddress, addAddress, updateAddress, exportAddress } from "@/api/address";
 	export default{
 		name:'Orders',
 		data(){
 			return {
-				businessId:this.$route.query.businessId,
-				business:{},
-				user:{},
-				cartArr:[],
-				deliveryaddress:{}
+				total: 0,
+				id: this.$route.params.id,
+				order: [],
+				address: [],
+				// 查询参数
+				queryParams: {
+					pageNum: 1,
+					pageSize: 10,
+					userName: null,
+					createdTime: null,
+					totalCount: null,
+					totalPrice: null,
+					preMoney: null,
+					postFee: null,
+					payMoney: null,
+					payStatus: null,
+					payType: null,
+					consignTime: null,
+					arriveTime: null,
+					addressId: null,
+					endTime: null,
+					invoice: null
+				},
 			}
 		},
 		created() {
-			this.user = this.$getSessionStorage('user');
-			this.deliveryaddress = this.$getLocalStorage(this.user.userId);
-			
+			//查询订单详细内容
+			this.getDetail();	
 			//查询当前商家
-			this.$axios.post('BusinessController/getBusinessById',this.$qs.stringify({
-				businessId:this.businessId
-			})).then(response=>{
-				this.business = response.data;
-			}).catch(error=>{
-				console.error(error);
-			});
 			
 			//查询当前用户在购物车中的当前商家食品列表
-			this.$axios.post('CartController/listCart',this.$qs.stringify({
-				userId:this.user.userId,
-				businessId:this.businessId
-			})).then(response=>{
-				this.cartArr = response.data;
-			}).catch(error=>{
-				console.error(error);
-			});
+			
 		},
 		computed:{
 			totalPrice(){
@@ -96,31 +92,25 @@
 			}
 		},
 		methods:{
+			getDetail(){
+				getOrder(this.id).then(response => { // 查询订单详情
+					this.order = response.data;
+					console.log("id:" +this.id);
+					console.log("order:" +this.order);
+				}).then(response => {
+					this.findAddress(this.order.addressId) // 查询订单地址
+				});
+			},
+			findAddress(id){
+				getAddress(id).then(response => {
+					this.address = response.data;
+				});
+			},
 			toUserAddress(){
-				this.$router.push({path:'/userAddress',query:{businessId:this.businessId}});
+				
 			},
 			toPayment(){
-				if(this.deliveryaddress==null){
-					alert('请选择送货地址！');
-					return;
-				}
 				
-				//创建订单
-				this.$axios.post('OrdersController/createOrders',this.$qs.stringify({
-					userId:this.user.userId,
-					businessId:this.businessId,
-					daId:this.deliveryaddress.daId,
-					orderTotal:this.totalPrice
-				})).then(response=>{
-					let orderId = response.data;
-					if(orderId>0){
-						this.$router.push({path:'/payment',query:{orderId:orderId}});
-					}else{
-						alert('创建订单失败！');
-					}
-				}).catch(error=>{
-					console.error(error);
-				});
 			}
 		}
 	}

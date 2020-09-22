@@ -7,10 +7,10 @@ import com.ruoyi.hunger.domain.ElOrder;
 import com.ruoyi.hunger.service.IElOrderService;
 
 /**
- * 订单Service业务层处理
+ * 订单总Service业务层处理
  *
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Service
 public class ElOrderServiceImpl extends ServiceImpl<ElOrderMapper, ElOrder> implements IElOrderService {

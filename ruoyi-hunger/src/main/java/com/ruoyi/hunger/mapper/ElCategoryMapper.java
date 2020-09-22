@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 分类信息Mapper接口
  *
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 public interface ElCategoryMapper extends BaseMapper<ElCategory> {
 

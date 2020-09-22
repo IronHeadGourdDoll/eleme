@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 外卖活动Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -85,7 +85,6 @@ public class ElActivityController extends BaseController {
     /**
      * 获取外卖活动详细信息
      */
-    @PreAuthorize("@ss.hasPermi('hunger:activity:query')" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
         return AjaxResult.success(iElActivityService.getById(id));

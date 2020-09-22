@@ -37,4 +37,7 @@ public class WebSecurity {
     public boolean check(Authentication authentication) {
         return true;
     }
+    public boolean check() {
+        return true;
+    }
 }

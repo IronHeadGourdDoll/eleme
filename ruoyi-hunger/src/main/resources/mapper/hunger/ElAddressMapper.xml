@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="countyName"    column="county_name"    />
         <result property="receiveName"    column="receive_name"    />
         <result property="receivePhone"    column="receive_phone"    />
+        <result property="isDefault"    column="is_default"    />
     </resultMap>
 
 

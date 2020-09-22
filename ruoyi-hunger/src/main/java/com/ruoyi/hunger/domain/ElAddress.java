@@ -19,7 +19,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 地址对象 el_address
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Data
 @ToString
@@ -63,4 +63,8 @@ private static final long serialVersionUID=1L;
     /** 收货电话 */
     @Excel(name = "收货电话")
     private String receivePhone;
+
+    /** 默认 */
+    @Excel(name = "默认")
+    private Integer isDefault;
 }

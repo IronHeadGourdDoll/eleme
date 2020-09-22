@@ -1,24 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="饭馆id" prop="restaurantId">
-        <el-input
-          v-model="queryParams.restaurantId"
-          placeholder="请输入饭馆id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="饭馆名" prop="restaurantName">
-        <el-input
-          v-model="queryParams.restaurantName"
-          placeholder="请输入饭馆名"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="创建用户名" prop="userName">
         <el-input
           v-model="queryParams.userName"
@@ -36,28 +18,98 @@
           placeholder="选择创建时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="购买件数" prop="totalAmount">
+      <el-form-item label="总数量" prop="totalCount">
         <el-input
-          v-model="queryParams.totalAmount"
-          placeholder="请输入购买件数"
+          v-model="queryParams.totalCount"
+          placeholder="请输入总数量"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="总价钱" prop="totalQuality">
+      <el-form-item label="总价钱" prop="totalPrice">
         <el-input
-          v-model="queryParams.totalQuality"
+          v-model="queryParams.totalPrice"
           placeholder="请输入总价钱"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="优惠金额" prop="preMoney">
+        <el-input
+          v-model="queryParams.preMoney"
+          placeholder="请输入优惠金额"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="邮费" prop="postFee">
+        <el-input
+          v-model="queryParams.postFee"
+          placeholder="请输入邮费"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="实付金额" prop="payMoney">
+        <el-input
+          v-model="queryParams.payMoney"
+          placeholder="请输入实付金额"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="支付状态" prop="payStatus">
+        <el-select v-model="queryParams.payStatus" placeholder="请选择支付状态" clearable size="small">
+          <el-option label="请选择字典生成" value="" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="支付方式" prop="payType">
+        <el-select v-model="queryParams.payType" placeholder="请选择支付方式" clearable size="small">
+          <el-option label="请选择字典生成" value="" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="发货时间" prop="consignTime">
+        <el-date-picker clearable size="small" style="width: 200px"
+          v-model="queryParams.consignTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择发货时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="预计送达时间" prop="arriveTime">
+        <el-date-picker clearable size="small" style="width: 200px"
+          v-model="queryParams.arriveTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择预计送达时间">
+        </el-date-picker>
+      </el-form-item>
       <el-form-item label="地址id" prop="addressId">
         <el-input
           v-model="queryParams.addressId"
           placeholder="请输入地址id"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="交易完成时间" prop="endTime">
+        <el-date-picker clearable size="small" style="width: 200px"
+          v-model="queryParams.endTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择交易完成时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="发票" prop="invoice">
+        <el-input
+          v-model="queryParams.invoice"
+          placeholder="请输入发票"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -113,18 +165,37 @@
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="地址id" align="center" prop="id" v-if="false"/>
-      <el-table-column label="饭馆id" align="center" prop="restaurantId" />
-      <el-table-column label="饭馆名" align="center" prop="restaurantName" />
+      <el-table-column label="发票" align="center" prop="id" v-if="false"/>
       <el-table-column label="创建用户名" align="center" prop="userName" />
       <el-table-column label="创建时间" align="center" prop="createdTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createdTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="购买件数" align="center" prop="totalAmount" />
-      <el-table-column label="总价钱" align="center" prop="totalQuality" />
+      <el-table-column label="总数量" align="center" prop="totalCount" />
+      <el-table-column label="总价钱" align="center" prop="totalPrice" />
+      <el-table-column label="优惠金额" align="center" prop="preMoney" />
+      <el-table-column label="邮费" align="center" prop="postFee" />
+      <el-table-column label="实付金额" align="center" prop="payMoney" />
+      <el-table-column label="支付状态" align="center" prop="payStatus" />
+      <el-table-column label="支付方式" align="center" prop="payType" />
+      <el-table-column label="发货时间" align="center" prop="consignTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.consignTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="预计送达时间" align="center" prop="arriveTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.arriveTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="地址id" align="center" prop="addressId" />
+      <el-table-column label="交易完成时间" align="center" prop="endTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="发票" align="center" prop="invoice" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -153,15 +224,9 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改订单对话框 -->
+    <!-- 添加或修改订单总对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="饭馆id" prop="restaurantId">
-          <el-input v-model="form.restaurantId" placeholder="请输入饭馆id" />
-        </el-form-item>
-        <el-form-item label="饭馆名" prop="restaurantName">
-          <el-input v-model="form.restaurantName" placeholder="请输入饭馆名" />
-        </el-form-item>
         <el-form-item label="创建用户名" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入创建用户名" />
         </el-form-item>
@@ -173,14 +238,60 @@
             placeholder="选择创建时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="购买件数" prop="totalAmount">
-          <el-input v-model="form.totalAmount" placeholder="请输入购买件数" />
+        <el-form-item label="总数量" prop="totalCount">
+          <el-input v-model="form.totalCount" placeholder="请输入总数量" />
         </el-form-item>
-        <el-form-item label="总价钱" prop="totalQuality">
-          <el-input v-model="form.totalQuality" placeholder="请输入总价钱" />
+        <el-form-item label="总价钱" prop="totalPrice">
+          <el-input v-model="form.totalPrice" placeholder="请输入总价钱" />
+        </el-form-item>
+        <el-form-item label="优惠金额" prop="preMoney">
+          <el-input v-model="form.preMoney" placeholder="请输入优惠金额" />
+        </el-form-item>
+        <el-form-item label="邮费" prop="postFee">
+          <el-input v-model="form.postFee" placeholder="请输入邮费" />
+        </el-form-item>
+        <el-form-item label="实付金额" prop="payMoney">
+          <el-input v-model="form.payMoney" placeholder="请输入实付金额" />
+        </el-form-item>
+        <el-form-item label="支付状态">
+          <el-radio-group v-model="form.payStatus">
+            <el-radio label="1">请选择字典生成</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="支付方式" prop="payType">
+          <el-select v-model="form.payType" placeholder="请选择支付方式">
+            <el-option label="请选择字典生成" value="" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发货时间" prop="consignTime">
+          <el-date-picker clearable size="small" style="width: 200px"
+            v-model="form.consignTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择发货时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="预计送达时间" prop="arriveTime">
+          <el-date-picker clearable size="small" style="width: 200px"
+            v-model="form.arriveTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择预计送达时间">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="地址id" prop="addressId">
           <el-input v-model="form.addressId" placeholder="请输入地址id" />
+        </el-form-item>
+        <el-form-item label="交易完成时间" prop="endTime">
+          <el-date-picker clearable size="small" style="width: 200px"
+            v-model="form.endTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择交易完成时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="发票" prop="invoice">
+          <el-input v-model="form.invoice" placeholder="请输入发票" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,7 +321,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 订单表格数据
+      // 订单总表格数据
       orderList: [],
       // 弹出层标题
       title: "",
@@ -220,21 +331,25 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        restaurantId: null,
-        restaurantName: null,
         userName: null,
         createdTime: null,
-        totalAmount: null,
-        totalQuality: null,
-        addressId: null
+        totalCount: null,
+        totalPrice: null,
+        preMoney: null,
+        postFee: null,
+        payMoney: null,
+        payStatus: null,
+        payType: null,
+        consignTime: null,
+        arriveTime: null,
+        addressId: null,
+        endTime: null,
+        invoice: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        restaurantId: [
-          { required: true, message: "饭馆id不能为空", trigger: "blur" }
-        ],
       }
     };
   },
@@ -242,7 +357,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询订单列表 */
+    /** 查询订单总列表 */
     getList() {
       this.loading = true;
       listOrder(this.queryParams).then(response => {
@@ -260,13 +375,20 @@ export default {
     reset() {
       this.form = {
         id: null,
-        restaurantId: null,
-        restaurantName: null,
         userName: null,
         createdTime: null,
-        totalAmount: null,
-        totalQuality: null,
-        addressId: null
+        totalCount: null,
+        totalPrice: null,
+        preMoney: null,
+        postFee: null,
+        payMoney: null,
+        payStatus: 0,
+        payType: null,
+        consignTime: null,
+        arriveTime: null,
+        addressId: null,
+        endTime: null,
+        invoice: null
       };
       this.resetForm("form");
     },
@@ -290,7 +412,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加订单";
+      this.title = "添加订单总";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -299,7 +421,7 @@ export default {
       getOrder(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改订单";
+        this.title = "修改订单总";
       });
     },
     /** 提交按钮 */
@@ -329,7 +451,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除订单编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除订单总编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -343,7 +465,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有订单数据项?', "警告", {
+      this.$confirm('是否确认导出所有订单总数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

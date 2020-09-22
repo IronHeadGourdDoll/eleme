@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 评分Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -42,7 +42,6 @@ public class ElRatingController extends BaseController {
     /**
      * 查询评分列表
      */
-    @PreAuthorize("@ss.hasPermi('hunger:rating:list')")
     @GetMapping("/list")
     public TableDataInfo list(ElRating elRating)
     {
@@ -83,7 +82,6 @@ public class ElRatingController extends BaseController {
     /**
      * 获取评分详细信息
      */
-    @PreAuthorize("@ss.hasPermi('hunger:rating:query')" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
         return AjaxResult.success(iElRatingService.getById(id));

@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 分类信息Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -42,7 +42,6 @@ public class ElCategoryController extends BaseController {
     /**
      * 查询分类信息列表
      */
-    @PreAuthorize("@ss.hasPermi('hunger:category:list')")
     @GetMapping("/list")
     public TableDataInfo list(ElCategory elCategory)
     {
@@ -83,7 +82,6 @@ public class ElCategoryController extends BaseController {
     /**
      * 获取分类信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('hunger:category:query')" )
     @GetMapping(value = "/{categoryId}" )
     public AjaxResult getInfo(@PathVariable("categoryId" ) Long categoryId) {
         return AjaxResult.success(iElCategoryService.getById(categoryId));

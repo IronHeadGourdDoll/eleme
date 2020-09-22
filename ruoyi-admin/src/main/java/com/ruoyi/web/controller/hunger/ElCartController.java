@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 购物车Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -48,23 +48,20 @@ public class ElCartController extends BaseController {
     {
         startPage();
         LambdaQueryWrapper<ElCart> lqw = new LambdaQueryWrapper<ElCart>();
-        if (StringUtils.isNotBlank(elCart.getIsSupportCoupon())){
-            lqw.eq(ElCart::getIsSupportCoupon ,elCart.getIsSupportCoupon());
-        }
-        if (elCart.getDeliverTime() != null){
-            lqw.eq(ElCart::getDeliverTime ,elCart.getDeliverTime());
-        }
-        if (StringUtils.isNotBlank(elCart.getInvoice())){
-            lqw.eq(ElCart::getInvoice ,elCart.getInvoice());
-        }
-        if (elCart.getDeliverTime1() != null){
-            lqw.eq(ElCart::getDeliverTime1 ,elCart.getDeliverTime1());
-        }
         if (StringUtils.isNotBlank(elCart.getUserName())){
             lqw.like(ElCart::getUserName ,elCart.getUserName());
         }
-        if (elCart.getDeliverTime2() != null){
-            lqw.eq(ElCart::getDeliverTime2 ,elCart.getDeliverTime2());
+        if (elCart.getTotalCount() != null){
+            lqw.eq(ElCart::getTotalCount ,elCart.getTotalCount());
+        }
+        if (elCart.getTotalPrice() != null){
+            lqw.eq(ElCart::getTotalPrice ,elCart.getTotalPrice());
+        }
+        if (elCart.getPreMoney() != null){
+            lqw.eq(ElCart::getPreMoney ,elCart.getPreMoney());
+        }
+        if (elCart.getPayMoney() != null){
+            lqw.eq(ElCart::getPayMoney ,elCart.getPayMoney());
         }
         List<ElCart> list = iElCartService.list(lqw);
         return getDataTable(list);

@@ -10,7 +10,7 @@ import com.ruoyi.hunger.service.IElCategoryService;
  * 分类信息Service业务层处理
  *
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Service
 public class ElCategoryServiceImpl extends ServiceImpl<ElCategoryMapper, ElCategory> implements IElCategoryService {

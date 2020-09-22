@@ -1,24 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-
+import { getToken } from '@/utils/auth'
 import Element from 'element-ui'
 import './assets/icons'
 import Cookies from 'js-cookie'
 import store from './store' // globle vuex store
 import 'font-awesome/css/font-awesome.min.css'
 import axios from 'axios'
+import './permission' // permission control
 import qs from 'qs'
-import { getToken } from '@/utils/auth'
-import {
-	getCurDate,
-	setSessionStorage,
-	getSessionStorage,
-	removeSessionStorage,
-	setLocalStorage,
-	getLocalStorage,
-	removeLocalStorage
-} from './common.js'
 
 Vue.config.productionTip = false
 
@@ -29,16 +20,9 @@ Vue.prototype.$axios = axios;
 
 Vue.prototype.$qs = qs;
 
-Vue.prototype.$getCurDate = getCurDate;
-Vue.prototype.$setSessionStorage = setSessionStorage;
-Vue.prototype.$getSessionStorage = getSessionStorage;
-Vue.prototype.$removeSessionStorage = removeSessionStorage;
-Vue.prototype.$setLocalStorage = setLocalStorage;
-Vue.prototype.$getLocalStorage = getLocalStorage;
-Vue.prototype.$removeLocalStorage = removeLocalStorage;
-
 Vue.use(Element, {
-	size: Cookies.get('size') || 'medium' // set element-ui default size
+	size: Cookies.get('size') || 'medium', // set element-ui default size
+	zIndex: 3000 
   })
 
 router.beforeEach(function(to,from,next){

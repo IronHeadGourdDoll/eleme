@@ -19,7 +19,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 食物对象 el_food
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Data
 @ToString
@@ -58,11 +58,11 @@ private static final long serialVersionUID=1L;
 
     /** 评分数 */
     @Excel(name = "评分数")
-    private String ratingCount;
+    private BigDecimal ratingCount;
 
     /** 月销量 */
     @Excel(name = "月销量")
-    private String monthSale;
+    private Long monthSale;
 
     /** 描述 */
     @Excel(name = "描述")
@@ -70,9 +70,21 @@ private static final long serialVersionUID=1L;
 
     /** 评分 */
     @Excel(name = "评分")
-    private String rating;
+    private BigDecimal rating;
 
     /** 分类id */
     @Excel(name = "分类id")
     private Long categoryId;
+
+    /** 剩余数量 */
+    @Excel(name = "剩余数量")
+    private Integer surplusCount;
+
+    /** 单价 */
+    @Excel(name = "单价")
+    private BigDecimal price;
+
+    /** 邮费 */
+    @Excel(name = "邮费")
+    private BigDecimal postFee;
 }

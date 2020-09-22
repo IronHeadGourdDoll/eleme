@@ -91,6 +91,33 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="剩余数量" prop="surplusCount">
+        <el-input
+          v-model="queryParams.surplusCount"
+          placeholder="请输入剩余数量"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="单价" prop="price">
+        <el-input
+          v-model="queryParams.price"
+          placeholder="请输入单价"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="邮费" prop="postFee">
+        <el-input
+          v-model="queryParams.postFee"
+          placeholder="请输入邮费"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -141,7 +168,7 @@
 
     <el-table v-loading="loading" :data="foodList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="分类id" align="center" prop="id" v-if="false"/>
+      <el-table-column label="邮费" align="center" prop="id" v-if="false"/>
       <el-table-column label="名字" align="center" prop="name" />
       <el-table-column label="图片" align="center" prop="imagePath" />
       <el-table-column label="活动" align="center" prop="activity" />
@@ -152,6 +179,9 @@
       <el-table-column label="描述" align="center" prop="description" />
       <el-table-column label="评分" align="center" prop="rating" />
       <el-table-column label="分类id" align="center" prop="categoryId" />
+      <el-table-column label="剩余数量" align="center" prop="surplusCount" />
+      <el-table-column label="单价" align="center" prop="price" />
+      <el-table-column label="邮费" align="center" prop="postFee" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -213,6 +243,15 @@
         <el-form-item label="分类id" prop="categoryId">
           <el-input v-model="form.categoryId" placeholder="请输入分类id" />
         </el-form-item>
+        <el-form-item label="剩余数量" prop="surplusCount">
+          <el-input v-model="form.surplusCount" placeholder="请输入剩余数量" />
+        </el-form-item>
+        <el-form-item label="单价" prop="price">
+          <el-input v-model="form.price" placeholder="请输入单价" />
+        </el-form-item>
+        <el-form-item label="邮费" prop="postFee">
+          <el-input v-model="form.postFee" placeholder="请输入邮费" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -260,7 +299,10 @@ export default {
         monthSale: null,
         description: null,
         rating: null,
-        categoryId: null
+        categoryId: null,
+        surplusCount: null,
+        price: null,
+        postFee: null
       },
       // 表单参数
       form: {},
@@ -303,7 +345,10 @@ export default {
         monthSale: null,
         description: null,
         rating: null,
-        categoryId: null
+        categoryId: null,
+        surplusCount: null,
+        price: null,
+        postFee: null
       };
       this.resetForm("form");
     },

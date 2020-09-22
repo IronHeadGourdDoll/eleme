@@ -4,10 +4,10 @@ import com.ruoyi.hunger.domain.ElOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * 订单Service接口
+ * 订单总Service接口
  *
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 public interface IElOrderService extends IService<ElOrder> {
 

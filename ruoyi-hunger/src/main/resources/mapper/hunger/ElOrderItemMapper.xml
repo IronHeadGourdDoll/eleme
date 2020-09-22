@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hunger.mapper.ElOrderItemMapper">
+    
+    <resultMap type="ElOrderItem" id="ElOrderItemResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="foodId"    column="food_id"    />
+        <result property="name"    column="name"    />
+        <result property="totalCount"    column="total_count"    />
+        <result property="foodPrice"    column="food_price"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="preMoney"    column="pre_money"    />
+        <result property="postFee"    column="post_fee"    />
+        <result property="payMoney"    column="pay_money"    />
+    </resultMap>
+
+
+</mapper>

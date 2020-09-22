@@ -6,14 +6,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="ElOrder" id="ElOrderResult">
         <result property="id"    column="id"    />
-        <result property="restaurantId"    column="restaurant_id"    />
-        <result property="restaurantName"    column="restaurant_name"    />
         <result property="userName"    column="user_name"    />
         <result property="createdTime"    column="created_time"    />
-        <result property="totalAmount"    column="total_amount"    />
-        <result property="totalQuality"    column="total_quality"    />
+        <result property="totalCount"    column="total_count"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="preMoney"    column="pre_money"    />
+        <result property="postFee"    column="post_fee"    />
+        <result property="payMoney"    column="pay_money"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="consignTime"    column="consign_time"    />
+        <result property="arriveTime"    column="arrive_time"    />
         <result property="addressId"    column="address_id"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="invoice"    column="invoice"    />
     </resultMap>
-
 
 </mapper>

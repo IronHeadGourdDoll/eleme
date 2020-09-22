@@ -10,7 +10,7 @@ import com.ruoyi.hunger.service.IElShopService;
  * 商铺Service业务层处理
  *
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @Service
 public class ElShopServiceImpl extends ServiceImpl<ElShopMapper, ElShop> implements IElShopService {

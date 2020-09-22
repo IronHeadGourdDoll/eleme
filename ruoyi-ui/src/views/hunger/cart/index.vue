@@ -1,40 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="优惠" prop="isSupportCoupon">
-        <el-input
-          v-model="queryParams.isSupportCoupon"
-          placeholder="请输入优惠"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="送达时间" prop="deliverTime">
-        <el-date-picker clearable size="small" style="width: 200px"
-          v-model="queryParams.deliverTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="选择送达时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="发票" prop="invoice">
-        <el-input
-          v-model="queryParams.invoice"
-          placeholder="请输入发票"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="送达时间1" prop="deliverTime1">
-        <el-date-picker clearable size="small" style="width: 200px"
-          v-model="queryParams.deliverTime1"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="选择送达时间1">
-        </el-date-picker>
-      </el-form-item>
       <el-form-item label="用户名" prop="userName">
         <el-input
           v-model="queryParams.userName"
@@ -44,13 +10,41 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="送达时间2" prop="deliverTime2">
-        <el-date-picker clearable size="small" style="width: 200px"
-          v-model="queryParams.deliverTime2"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="选择送达时间2">
-        </el-date-picker>
+      <el-form-item label="总数" prop="totalCount">
+        <el-input
+          v-model="queryParams.totalCount"
+          placeholder="请输入总数"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="总价" prop="totalPrice">
+        <el-input
+          v-model="queryParams.totalPrice"
+          placeholder="请输入总价"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="优惠金额" prop="preMoney">
+        <el-input
+          v-model="queryParams.preMoney"
+          placeholder="请输入优惠金额"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="实付金额" prop="payMoney">
+        <el-input
+          v-model="queryParams.payMoney"
+          placeholder="请输入实付金额"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -102,25 +96,12 @@
 
     <el-table v-loading="loading" :data="cartList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="送达时间2" align="center" prop="id" v-if="false"/>
-      <el-table-column label="优惠" align="center" prop="isSupportCoupon" />
-      <el-table-column label="送达时间" align="center" prop="deliverTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.deliverTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="发票" align="center" prop="invoice" />
-      <el-table-column label="送达时间1" align="center" prop="deliverTime1" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.deliverTime1, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column label="实付金额" align="center" prop="id" v-if="false"/>
       <el-table-column label="用户名" align="center" prop="userName" />
-      <el-table-column label="送达时间2" align="center" prop="deliverTime2" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.deliverTime2, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column label="总数" align="center" prop="totalCount" />
+      <el-table-column label="总价" align="center" prop="totalPrice" />
+      <el-table-column label="优惠金额" align="center" prop="preMoney" />
+      <el-table-column label="实付金额" align="center" prop="payMoney" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -152,38 +133,20 @@
     <!-- 添加或修改购物车对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="优惠" prop="isSupportCoupon">
-          <el-input v-model="form.isSupportCoupon" placeholder="请输入优惠" />
-        </el-form-item>
-        <el-form-item label="送达时间" prop="deliverTime">
-          <el-date-picker clearable size="small" style="width: 200px"
-            v-model="form.deliverTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择送达时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="发票" prop="invoice">
-          <el-input v-model="form.invoice" placeholder="请输入发票" />
-        </el-form-item>
-        <el-form-item label="送达时间1" prop="deliverTime1">
-          <el-date-picker clearable size="small" style="width: 200px"
-            v-model="form.deliverTime1"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择送达时间1">
-          </el-date-picker>
-        </el-form-item>
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="送达时间2" prop="deliverTime2">
-          <el-date-picker clearable size="small" style="width: 200px"
-            v-model="form.deliverTime2"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择送达时间2">
-          </el-date-picker>
+        <el-form-item label="总数" prop="totalCount">
+          <el-input v-model="form.totalCount" placeholder="请输入总数" />
+        </el-form-item>
+        <el-form-item label="总价" prop="totalPrice">
+          <el-input v-model="form.totalPrice" placeholder="请输入总价" />
+        </el-form-item>
+        <el-form-item label="优惠金额" prop="preMoney">
+          <el-input v-model="form.preMoney" placeholder="请输入优惠金额" />
+        </el-form-item>
+        <el-form-item label="实付金额" prop="payMoney">
+          <el-input v-model="form.payMoney" placeholder="请输入实付金额" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -223,12 +186,11 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        isSupportCoupon: null,
-        deliverTime: null,
-        invoice: null,
-        deliverTime1: null,
         userName: null,
-        deliverTime2: null
+        totalCount: null,
+        totalPrice: null,
+        preMoney: null,
+        payMoney: null
       },
       // 表单参数
       form: {},
@@ -259,12 +221,11 @@ export default {
     reset() {
       this.form = {
         id: null,
-        isSupportCoupon: null,
-        deliverTime: null,
-        invoice: null,
-        deliverTime1: null,
         userName: null,
-        deliverTime2: null
+        totalCount: null,
+        totalPrice: null,
+        preMoney: null,
+        payMoney: null
       };
       this.resetForm("form");
     },

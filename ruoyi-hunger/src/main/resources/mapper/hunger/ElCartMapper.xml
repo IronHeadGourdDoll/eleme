@@ -6,12 +6,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="ElCart" id="ElCartResult">
         <result property="id"    column="id"    />
-        <result property="isSupportCoupon"    column="is_support_coupon"    />
-        <result property="deliverTime"    column="deliver_time"    />
-        <result property="invoice"    column="invoice"    />
-        <result property="deliverTime1"    column="deliver_time1"    />
         <result property="userName"    column="user_name"    />
-        <result property="deliverTime2"    column="deliver_time2"    />
+        <result property="totalCount"    column="total_count"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="preMoney"    column="pre_money"    />
+        <result property="payMoney"    column="pay_money"    />
     </resultMap>
 
 

@@ -100,11 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 // 对于登录login 验证码captchaImage 允许匿名访问（实际上只允许匿名用户访问，登录过后就不能访问了）
                 .antMatchers("/login", "/captchaImage").anonymous()
                 // 对于hunger list查找允许所有用户访问
-                .antMatchers("/hunger/*/list").access("@webSecurity.check(authentication)")
-                // 对于指定{id}查找允许所有用户访问
-                //.antMatchers("/hunger/*/{id}","/system/user/{id}").access("@webSecurity.checkId(#id)")
-                .antMatchers("/hunger/*/{id}","/system/user/{id}").access("@webSecurity.checkId(authentication,#id)")
-
+                .antMatchers(HttpMethod.GET,"/hunger/*/**").access("@webSecurity.check()")
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",

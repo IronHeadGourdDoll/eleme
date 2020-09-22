@@ -16,6 +16,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="description"    column="description"    />
         <result property="rating"    column="rating"    />
         <result property="categoryId"    column="category_id"    />
+        <result property="surplusCount"    column="surplus_count"    />
+        <result property="price"    column="price"    />
+        <result property="postFee"    column="post_fee"    />
     </resultMap>
 
 

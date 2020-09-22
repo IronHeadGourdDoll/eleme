@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 食物Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -42,7 +42,6 @@ public class ElFoodController extends BaseController {
     /**
      * 查询食物列表
      */
-    @PreAuthorize("@ss.hasPermi('hunger:food:list')")
     @GetMapping("/list")
     public TableDataInfo list(ElFood elFood)
     {
@@ -63,20 +62,29 @@ public class ElFoodController extends BaseController {
         if (StringUtils.isNotBlank(elFood.getTips())){
             lqw.eq(ElFood::getTips ,elFood.getTips());
         }
-        if (StringUtils.isNotBlank(elFood.getRatingCount())){
+        if (elFood.getRatingCount() != null){
             lqw.eq(ElFood::getRatingCount ,elFood.getRatingCount());
         }
-        if (StringUtils.isNotBlank(elFood.getMonthSale())){
+        if (elFood.getMonthSale() != null){
             lqw.eq(ElFood::getMonthSale ,elFood.getMonthSale());
         }
         if (StringUtils.isNotBlank(elFood.getDescription())){
             lqw.eq(ElFood::getDescription ,elFood.getDescription());
         }
-        if (StringUtils.isNotBlank(elFood.getRating())){
+        if (elFood.getRating() != null){
             lqw.eq(ElFood::getRating ,elFood.getRating());
         }
         if (elFood.getCategoryId() != null){
             lqw.eq(ElFood::getCategoryId ,elFood.getCategoryId());
+        }
+        if (elFood.getSurplusCount() != null){
+            lqw.eq(ElFood::getSurplusCount ,elFood.getSurplusCount());
+        }
+        if (elFood.getPrice() != null){
+            lqw.eq(ElFood::getPrice ,elFood.getPrice());
+        }
+        if (elFood.getPostFee() != null){
+            lqw.eq(ElFood::getPostFee ,elFood.getPostFee());
         }
         List<ElFood> list = iElFoodService.list(lqw);
         return getDataTable(list);
@@ -98,7 +106,6 @@ public class ElFoodController extends BaseController {
     /**
      * 获取食物详细信息
      */
-    @PreAuthorize("@ss.hasPermi('hunger:food:query')" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
         return AjaxResult.success(iElFoodService.getById(id));

@@ -1,4 +1,4 @@
-package com.ruoyi.hunger.controller;
+package com.ruoyi.web.controller.hunger;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 地址Controller
  * 
  * @author gourddoll
- * @date 2020-09-17
+ * @date 2020-09-21
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
@@ -42,7 +42,6 @@ public class ElAddressController extends BaseController {
     /**
      * 查询地址列表
      */
-    @PreAuthorize("@ss.hasPermi('hunger:address:list')")
     @GetMapping("/list")
     public TableDataInfo list(ElAddress elAddress)
     {
@@ -68,6 +67,9 @@ public class ElAddressController extends BaseController {
         }
         if (StringUtils.isNotBlank(elAddress.getReceivePhone())){
             lqw.eq(ElAddress::getReceivePhone ,elAddress.getReceivePhone());
+        }
+        if (elAddress.getIsDefault() != null){
+            lqw.eq(ElAddress::getIsDefault ,elAddress.getIsDefault());
         }
         List<ElAddress> list = iElAddressService.list(lqw);
         return getDataTable(list);
