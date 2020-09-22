@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 18/09/2020 20:54:57
+ Date: 22/09/2020 21:03:04
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `el_activity`;
 CREATE TABLE `el_activity`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `icon_color` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标颜色',
   `icon_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标名字',
@@ -30,7 +30,7 @@ CREATE TABLE `el_activity`  (
   `ranking_weight` int(11) NULL DEFAULT NULL COMMENT '权重',
   `restaurant_id` int(11) NULL DEFAULT NULL COMMENT '饭馆id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '外卖活动表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '外卖活动表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_activity
@@ -42,7 +42,7 @@ INSERT INTO `el_activity` VALUES (1, '满100减1', '#FFFFFF', 'manjian', '满减
 -- ----------------------------
 DROP TABLE IF EXISTS `el_address`;
 CREATE TABLE `el_address`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `detail` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地址',
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名地址',
   `province_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
@@ -50,47 +50,56 @@ CREATE TABLE `el_address`  (
   `county_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区县',
   `receive_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人',
   `receive_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货电话',
+  `is_default` int(2) NULL DEFAULT NULL COMMENT '默认',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地址表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地址表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_address
 -- ----------------------------
-INSERT INTO `el_address` VALUES (1, '西南航空港经济开发区学府路一段24号', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `el_address` VALUES (1, '西南航空港经济开发区学府路一段24号', 'zhangsan', '四川', '成都', '双流', '李四', '123456789', 1);
+INSERT INTO `el_address` VALUES (2, '学姐饭馆', 'zhangsan', '四川', '成都', '双流', '火云邪神', '11235', 0);
 
 -- ----------------------------
 -- Table structure for el_cart
 -- ----------------------------
 DROP TABLE IF EXISTS `el_cart`;
 CREATE TABLE `el_cart`  (
-  `id` int(11) NOT NULL,
-  `is_support_coupon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '优惠',
-  `deliver_time` datetime(0) NULL DEFAULT NULL COMMENT '送达时间',
-  `invoice` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '发票',
-  `deliver_time1` datetime(0) NULL DEFAULT NULL COMMENT '送达时间1',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `deliver_time2` datetime(0) NULL DEFAULT NULL COMMENT '送达时间2',
+  `total_count` int(10) NULL DEFAULT NULL COMMENT '总数',
+  `total_price` double(10, 2) NULL DEFAULT NULL COMMENT '总价',
+  `pre_money` double(10, 0) NULL DEFAULT NULL COMMENT '优惠金额',
+  `pay_money` double(10, 2) NULL DEFAULT NULL COMMENT '实付金额',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_cart
 -- ----------------------------
-INSERT INTO `el_cart` VALUES (1, '0', '2020-09-15 19:22:43', '0', NULL, NULL, NULL);
+INSERT INTO `el_cart` VALUES (1, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
--- Table structure for el_cart_food
+-- Table structure for el_cart_item
 -- ----------------------------
-DROP TABLE IF EXISTS `el_cart_food`;
-CREATE TABLE `el_cart_food`  (
-  `cart_id` int(11) NULL DEFAULT NULL,
-  `food_id` int(11) NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车食品关联表' ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `el_cart_item`;
+CREATE TABLE `el_cart_item`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cart_id` int(11) NULL DEFAULT NULL COMMENT '购物车id',
+  `food_id` int(11) NULL DEFAULT NULL COMMENT '食品id',
+  `food_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '食品名',
+  `total_count` int(11) NULL DEFAULT NULL COMMENT '总数',
+  `food_price` double(10, 2) NULL DEFAULT NULL COMMENT '单价',
+  `total_price` double(10, 2) NULL DEFAULT NULL COMMENT '总价',
+  `pre_money` double(10, 2) NULL DEFAULT NULL COMMENT '优惠金额',
+  `pay_money` double(10, 2) NULL DEFAULT NULL COMMENT '实付金额',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车详情表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of el_cart_food
+-- Records of el_cart_item
 -- ----------------------------
-INSERT INTO `el_cart_food` VALUES (1, 1);
+INSERT INTO `el_cart_item` VALUES (1, 1, 1, NULL, 1, 10.00, 10.00, 1.00, 9.00);
 
 -- ----------------------------
 -- Table structure for el_category
@@ -121,11 +130,11 @@ INSERT INTO `el_category` VALUES (1, '麻辣', 0, '1', '1', 1, 'system', '2020-0
 -- ----------------------------
 DROP TABLE IF EXISTS `el_city`;
 CREATE TABLE `el_city`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级id',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '城市名',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '城市表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '城市表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_city
@@ -136,47 +145,83 @@ CREATE TABLE `el_city`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `el_food`;
 CREATE TABLE `el_food`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名字',
   `image_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片',
   `activity` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '活动',
   `restuarant_id` int(11) NOT NULL COMMENT '饭馆id',
   `tips` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '小介绍',
-  `rating_count` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评分数',
-  `month_sale` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '月销量',
+  `rating_count` double(10, 2) NULL DEFAULT NULL COMMENT '评分数',
+  `month_sale` double(10, 0) NULL DEFAULT NULL COMMENT '月销量',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `rating` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评分',
+  `rating` double(10, 2) NULL DEFAULT NULL COMMENT '评分',
   `category_id` int(11) NULL DEFAULT NULL COMMENT '分类id',
+  `surplus_count` int(1) NULL DEFAULT NULL COMMENT '剩余数量',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '单价',
+  `post_fee` double(10, 2) NULL DEFAULT NULL COMMENT '邮费',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '食物表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '食物表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_food
 -- ----------------------------
-INSERT INTO `el_food` VALUES (1, '宫保鸡丁', '/data/1.png', '0', 1, '月销100', '300', '400', '好吃的不得了', '4.9', NULL);
+INSERT INTO `el_food` VALUES (1, '宫保鸡丁', '/data/1.png', '0', 1, '月销100', 300.00, 400, '好吃的不得了', 4.90, 1, 100, 9.90, NULL);
+INSERT INTO `el_food` VALUES (2, '麻辣香锅', NULL, NULL, 2, '辣的你心慌', 4.80, NULL, NULL, NULL, 1, 10, 19.90, NULL);
 
 -- ----------------------------
 -- Table structure for el_order
 -- ----------------------------
 DROP TABLE IF EXISTS `el_order`;
 CREATE TABLE `el_order`  (
-  `id` int(11) NOT NULL,
-  `restaurant_id` int(11) NOT NULL COMMENT '饭馆id',
-  `restaurant_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '饭馆名',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建用户名',
   `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `total_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '购买件数',
-  `total_quality` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '总价钱',
+  `total_count` int(10) NULL DEFAULT NULL COMMENT '总数量',
+  `total_price` double(10, 2) NULL DEFAULT NULL COMMENT '总价钱',
+  `pre_money` double(10, 2) NULL DEFAULT NULL COMMENT '优惠金额',
+  `post_fee` double(10, 2) NULL DEFAULT NULL COMMENT '邮费',
+  `pay_money` double(10, 2) NULL DEFAULT NULL COMMENT '实付金额',
+  `pay_status` int(2) NULL DEFAULT NULL COMMENT '支付状态',
+  `pay_type` varchar(65) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付方式',
+  `consign_time` datetime(0) NULL DEFAULT NULL COMMENT '发货时间',
+  `arrive_time` datetime(0) NULL DEFAULT NULL COMMENT '预计送达时间',
   `address_id` int(11) NULL DEFAULT NULL COMMENT '地址id',
+  `end_time` datetime(0) NULL DEFAULT NULL COMMENT '交易完成时间',
+  `invoice` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '发票',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单总表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_order
 -- ----------------------------
-INSERT INTO `el_order` VALUES (1, 1, '信息工程饭馆', 'wuliang', '2020-09-15 19:28:17', '30', '1', NULL);
-INSERT INTO `el_order` VALUES (2, 1, '信息工程饭馆', 'zhangsan', NULL, '2', '2', 1);
-INSERT INTO `el_order` VALUES (3, 1, '信息工程饭馆', 'zhangsan', NULL, '3', '6', NULL);
+INSERT INTO `el_order` VALUES (1, 'wuliang', '2020-09-15 19:28:17', 5, 1.00, NULL, 5.00, 10.00, 1, NULL, NULL, NULL, 2, NULL, '');
+INSERT INTO `el_order` VALUES (2, 'zhangsan', '2020-09-22 21:55:19', 45, 2.00, NULL, 0.00, 10.00, 1, NULL, NULL, NULL, 1, NULL, '');
+INSERT INTO `el_order` VALUES (3, 'zhangsan', '2020-09-15 21:55:22', 12, 6.00, NULL, 5.00, 99.00, 0, NULL, NULL, NULL, 1, NULL, '');
+INSERT INTO `el_order` VALUES (4, 'zhangsan', '2020-09-15 19:07:49', 45, 1.00, NULL, 0.90, 50.00, 1, NULL, NULL, NULL, 1, '2020-09-22 19:08:22', '');
+
+-- ----------------------------
+-- Table structure for el_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `el_order_item`;
+CREATE TABLE `el_order_item`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `food_id` int(11) NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名字',
+  `total_count` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品件数',
+  `food_price` double(10, 2) NULL DEFAULT NULL COMMENT '单价',
+  `total_price` double(10, 2) NULL DEFAULT NULL COMMENT '商品总额',
+  `pre_money` double(10, 2) NULL DEFAULT NULL COMMENT '优惠金额',
+  `post_fee` double(10, 2) NULL DEFAULT NULL COMMENT '邮费',
+  `pay_money` double(10, 2) NULL DEFAULT NULL COMMENT '支付金额',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单详情表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of el_order_item
+-- ----------------------------
+INSERT INTO `el_order_item` VALUES (1, 1, 2, '北京烤鸭', '3', 19.90, 60.00, NULL, NULL, NULL);
+INSERT INTO `el_order_item` VALUES (2, 1, 1, '麻辣香锅', '10', 9.90, 99.00, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for el_rating
@@ -202,7 +247,7 @@ INSERT INTO `el_rating` VALUES (1, 1, '4.9', '2020-09-14 19:38:45', 'wuliang', N
 -- ----------------------------
 DROP TABLE IF EXISTS `el_shop`;
 CREATE TABLE `el_shop`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商铺名',
   `province_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
   `city_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
@@ -220,13 +265,14 @@ CREATE TABLE `el_shop`  (
   `start_time` datetime(0) NULL DEFAULT NULL COMMENT '营业开始时间',
   `end_time` datetime(0) NULL DEFAULT NULL COMMENT '营业结束时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商铺表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商铺表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of el_shop
 -- ----------------------------
 INSERT INTO `el_shop` VALUES (1, '信息工程饭馆1', '四川', '成都', '双流', '西南航空港经济开发区学府路一段24号 ', NULL, NULL, '123456789', NULL, NULL, '欢迎光临', '这是个饭馆', '骑手送', '1', '2020-09-17 15:23:56', '2020-09-17 17:24:03');
 INSERT INTO `el_shop` VALUES (2, '漂亮学姐饭馆', '四川', '成都', '双流', '成都信息工程大学航空港校区', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '顺丰', NULL, '2020-09-16 15:24:10', '2020-09-17 15:24:15');
+INSERT INTO `el_shop` VALUES (3, '五战烤鸭', '四川', '成都', '双流', '学府路一段', NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -252,20 +298,21 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
-INSERT INTO `gen_table` VALUES (69, 'el_activity', '外卖活动表', 'ElActivity', 'crud', 'com.ruoyi.hunger', 'hunger', 'activity', '活动管理', 'gourddoll', '0', '/', '{\"parentMenuId\":\"2000\"}', 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12', NULL);
-INSERT INTO `gen_table` VALUES (70, 'el_address', '地址表', 'ElAddress', 'crud', 'com.ruoyi.hunger', 'hunger', 'address', '地址管理', 'gourddoll', '0', '/', '{\"parentMenuId\":\"2000\"}', 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22', NULL);
-INSERT INTO `gen_table` VALUES (71, 'el_cart', '购物车表', 'ElCart', 'crud', 'com.ruoyi.hunger', 'hunger', 'cart', '购物车', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39', NULL);
-INSERT INTO `gen_table` VALUES (72, 'el_category', '分类信息表', 'ElCategory', 'crud', 'com.ruoyi.hunger', 'hunger', 'category', '分类信息', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47', NULL);
-INSERT INTO `gen_table` VALUES (73, 'el_city', '城市表', 'ElCity', 'crud', 'com.ruoyi.hunger', 'hunger', 'city', '城市管理', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:36', NULL);
-INSERT INTO `gen_table` VALUES (74, 'el_food', '食物表', 'ElFood', 'crud', 'com.ruoyi.hunger', 'hunger', 'food', '食物管理', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:47', NULL);
-INSERT INTO `gen_table` VALUES (75, 'el_order', '订单表', 'ElOrder', 'crud', 'com.ruoyi.hunger', 'hunger', 'order', '订单管理', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57', NULL);
-INSERT INTO `gen_table` VALUES (76, 'el_rating', '评分表', 'ElRating', 'crud', 'com.ruoyi.hunger', 'hunger', 'rating', '评分管理', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08', NULL);
-INSERT INTO `gen_table` VALUES (77, 'el_shop', '商铺表', 'ElShop', 'crud', 'com.ruoyi.hunger', 'hunger', 'shop', '商铺管理', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18', NULL);
+INSERT INTO `gen_table` VALUES (99, 'el_address', '地址表', 'ElAddress', 'crud', 'com.ruoyi.hunger', 'hunger', 'address', '地址', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56', NULL);
+INSERT INTO `gen_table` VALUES (100, 'el_cart', '购物车表', 'ElCart', 'crud', 'com.ruoyi.hunger', 'hunger', 'cart', '购物车', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04', NULL);
+INSERT INTO `gen_table` VALUES (101, 'el_cart_item', '购物车详情表', 'ElCartItem', 'crud', 'com.ruoyi.hunger', 'hunger', 'cartItem', '购物车详情', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45', NULL);
+INSERT INTO `gen_table` VALUES (102, 'el_category', '分类信息表', 'ElCategory', 'crud', 'com.ruoyi.hunger', 'hunger', 'category', '分类信息', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54', NULL);
+INSERT INTO `gen_table` VALUES (103, 'el_city', '城市表', 'ElCity', 'crud', 'com.ruoyi.hunger', 'hunger', 'city', '城市', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:04', NULL);
+INSERT INTO `gen_table` VALUES (104, 'el_food', '食物表', 'ElFood', 'crud', 'com.ruoyi.hunger', 'hunger', 'food', '食物', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12', NULL);
+INSERT INTO `gen_table` VALUES (105, 'el_order', '订单总表', 'ElOrder', 'crud', 'com.ruoyi.hunger', 'hunger', 'order', '订单总', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20', NULL);
+INSERT INTO `gen_table` VALUES (106, 'el_order_item', '订单详情表', 'ElOrderItem', 'crud', 'com.ruoyi.hunger', 'hunger', 'orderItem', '订单详情', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42', NULL);
+INSERT INTO `gen_table` VALUES (107, 'el_rating', '评分表', 'ElRating', 'crud', 'com.ruoyi.hunger', 'hunger', 'rating', '评分', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51', NULL);
+INSERT INTO `gen_table` VALUES (108, 'el_shop', '商铺表', 'ElShop', 'crud', 'com.ruoyi.hunger', 'hunger', 'shop', '商铺', 'gourddoll', '0', '/', '{\"parentMenuId\":2000}', 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -295,89 +342,111 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 571 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 862 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table_column
 -- ----------------------------
-INSERT INTO `gen_table_column` VALUES (493, '69', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (494, '69', 'description', '描述', 'varchar(255)', 'String', 'description', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (495, '69', 'icon_color', '图标颜色', 'varchar(255)', 'String', 'iconColor', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (496, '69', 'icon_name', '图标名字', 'varchar(255)', 'String', 'iconName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (497, '69', 'name', '活动名字', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (498, '69', 'ranking_weight', '权重', 'int(11)', 'Long', 'rankingWeight', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (499, '69', 'restaurant_id', '饭馆id', 'int(11)', 'Long', 'restaurantId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:12');
-INSERT INTO `gen_table_column` VALUES (500, '70', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (501, '70', 'detail', '详细地址', 'varchar(255)', 'String', 'detail', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (502, '70', 'user_name', '用户名地址', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (503, '70', 'province_name', '省', 'varchar(255)', 'String', 'provinceName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (504, '70', 'city_name', '市', 'varchar(255)', 'String', 'cityName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (505, '70', 'county_name', '区县', 'varchar(255)', 'String', 'countyName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 6, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (506, '70', 'receive_name', '收货人', 'varchar(255)', 'String', 'receiveName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 7, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (507, '70', 'receive_phone', '收货电话', 'varchar(255)', 'String', 'receivePhone', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:22');
-INSERT INTO `gen_table_column` VALUES (508, '71', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (509, '71', 'is_support_coupon', '优惠', 'varchar(255)', 'String', 'isSupportCoupon', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (510, '71', 'deliver_time', '送达时间', 'datetime', 'Date', 'deliverTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 3, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (511, '71', 'invoice', '发票', 'varchar(255)', 'String', 'invoice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (512, '71', 'deliver_time1', '送达时间1', 'datetime', 'Date', 'deliverTime1', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 5, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (513, '71', 'user_name', '用户名', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 6, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (514, '71', 'deliver_time2', '送达时间2', 'datetime', 'Date', 'deliverTime2', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 7, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:39');
-INSERT INTO `gen_table_column` VALUES (515, '72', 'category_id', '分类ID', 'bigint(20)', 'Long', 'categoryId', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (516, '72', 'category_name', '分类名称', 'varchar(50)', 'String', 'categoryName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (517, '72', 'parent_id', '父分类ID', 'bigint(20)', 'Long', 'parentId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (518, '72', 'category_type', '分类类型', 'char(1)', 'String', 'categoryType', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'select', '', 4, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (519, '72', 'status', '分类状态', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 5, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (520, '72', 'order_num', '显示顺序', 'int(4)', 'Integer', 'orderNum', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (521, '72', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 7, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (522, '72', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 8, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (523, '72', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 9, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (524, '72', 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'datetime', '', 10, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (525, '72', 'remark', '备注', 'varchar(500)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'textarea', '', 11, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:05:47');
-INSERT INTO `gen_table_column` VALUES (526, '73', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:36');
-INSERT INTO `gen_table_column` VALUES (527, '73', 'parent_id', '父级id', 'varchar(255)', 'String', 'parentId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:36');
-INSERT INTO `gen_table_column` VALUES (528, '73', 'name', '城市名', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:36');
-INSERT INTO `gen_table_column` VALUES (529, '74', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (530, '74', 'name', '名字', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (531, '74', 'image_path', '图片', 'varchar(255)', 'String', 'imagePath', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (532, '74', 'activity', '活动', 'varchar(255)', 'String', 'activity', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (533, '74', 'restuarant_id', '饭馆id', 'int(11)', 'Long', 'restuarantId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2020-09-17 15:36:16', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (534, '74', 'tips', '小介绍', 'varchar(255)', 'String', 'tips', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (535, '74', 'rating_count', '评分数', 'varchar(255)', 'String', 'ratingCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (536, '74', 'month_sale', '月销量', 'varchar(255)', 'String', 'monthSale', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (537, '74', 'description', '描述', 'varchar(255)', 'String', 'description', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (538, '74', 'rating', '评分', 'varchar(255)', 'String', 'rating', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (539, '74', 'category_id', '分类id', 'int(11)', 'Long', 'categoryId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 11, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:47');
-INSERT INTO `gen_table_column` VALUES (540, '75', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (541, '75', 'restaurant_id', '饭馆id', 'int(11)', 'Long', 'restaurantId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (542, '75', 'restaurant_name', '饭馆名', 'varchar(255)', 'String', 'restaurantName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (543, '75', 'user_name', '创建用户名', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (544, '75', 'created_time', '创建时间', 'datetime', 'Date', 'createdTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 5, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (545, '75', 'total_amount', '购买件数', 'varchar(255)', 'String', 'totalAmount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (546, '75', 'total_quality', '总价钱', 'varchar(255)', 'String', 'totalQuality', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (547, '75', 'address_id', '地址id', 'int(11)', 'Long', 'addressId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:06:57');
-INSERT INTO `gen_table_column` VALUES (548, '76', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08');
-INSERT INTO `gen_table_column` VALUES (549, '76', 'restuarant_id', '饭馆id', 'int(11)', 'Long', 'restuarantId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08');
-INSERT INTO `gen_table_column` VALUES (550, '76', 'score', '评分', 'varchar(255)', 'String', 'score', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08');
-INSERT INTO `gen_table_column` VALUES (551, '76', 'rating_at', '评分时间', 'datetime', 'Date', 'ratingAt', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 4, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08');
-INSERT INTO `gen_table_column` VALUES (552, '76', 'user_name', '用户名', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08');
-INSERT INTO `gen_table_column` VALUES (553, '76', 'food_id', '食物id', 'int(11)', 'Long', 'foodId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:08');
-INSERT INTO `gen_table_column` VALUES (554, '77', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (555, '77', 'name', '商铺名', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (556, '77', 'province_name', '省', 'varchar(255)', 'String', 'provinceName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (557, '77', 'city_name', '市', 'varchar(255)', 'String', 'cityName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (558, '77', 'area_name', '县/区', 'varchar(255)', 'String', 'areaName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (559, '77', 'detail', '详细地址', 'varchar(255)', 'String', 'detail', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (560, '77', 'latitude', '纬度', 'varchar(255)', 'String', 'latitude', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (561, '77', 'longitude', '经度', 'varchar(255)', 'String', 'longitude', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (562, '77', 'phone', '电话', 'varchar(255)', 'String', 'phone', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (563, '77', 'image_path', '图片路径', 'varchar(255)', 'String', 'imagePath', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (564, '77', 'status', '状态', 'varchar(255)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 11, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (565, '77', 'promotion_info', '促销信息', 'varchar(255)', 'String', 'promotionInfo', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 12, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (566, '77', 'description', '描述', 'varchar(255)', 'String', 'description', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 13, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (567, '77', 'delivery_mode', '配送方式', 'varchar(255)', 'String', 'deliveryMode', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 14, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (568, '77', 'is_new', '新店', 'varchar(255)', 'String', 'isNew', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 15, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (569, '77', 'start_time', '营业开始时间', 'datetime', 'Date', 'startTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 16, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
-INSERT INTO `gen_table_column` VALUES (570, '77', 'end_time', '营业结束时间', 'datetime', 'Date', 'endTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 17, 'admin', '2020-09-17 15:36:17', '', '2020-09-17 16:07:18');
+INSERT INTO `gen_table_column` VALUES (762, '99', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (763, '99', 'detail', '详细地址', 'varchar(255)', 'String', 'detail', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (764, '99', 'user_name', '用户名地址', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (765, '99', 'province_name', '省', 'varchar(255)', 'String', 'provinceName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (766, '99', 'city_name', '市', 'varchar(255)', 'String', 'cityName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (767, '99', 'county_name', '区县', 'varchar(255)', 'String', 'countyName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (768, '99', 'receive_name', '收货人', 'varchar(255)', 'String', 'receiveName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 7, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (769, '99', 'receive_phone', '收货电话', 'varchar(255)', 'String', 'receivePhone', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (770, '99', 'is_default', '默认', 'int(2)', 'Integer', 'isDefault', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:25:56');
+INSERT INTO `gen_table_column` VALUES (771, '100', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04');
+INSERT INTO `gen_table_column` VALUES (772, '100', 'user_name', '用户名', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04');
+INSERT INTO `gen_table_column` VALUES (773, '100', 'total_count', '总数', 'int(10)', 'Integer', 'totalCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04');
+INSERT INTO `gen_table_column` VALUES (774, '100', 'total_price', '总价', 'double(10,2)', 'BigDecimal', 'totalPrice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04');
+INSERT INTO `gen_table_column` VALUES (775, '100', 'pre_money', '优惠金额', 'double(10,0)', 'Long', 'preMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04');
+INSERT INTO `gen_table_column` VALUES (776, '100', 'pay_money', '实付金额', 'double(10,2)', 'BigDecimal', 'payMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:04');
+INSERT INTO `gen_table_column` VALUES (777, '101', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (778, '101', 'cart_id', '购物车id', 'int(11)', 'Long', 'cartId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (779, '101', 'food_id', '食品id', 'int(11)', 'Long', 'foodId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (780, '101', 'food_name', '食品名', 'varchar(255)', 'String', 'foodName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (781, '101', 'total_count', '总数', 'int(11)', 'Long', 'totalCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (782, '101', 'food_price', '单价', 'double(10,2)', 'BigDecimal', 'foodPrice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (783, '101', 'total_price', '总价', 'double(10,2)', 'BigDecimal', 'totalPrice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (784, '101', 'pre_money', '优惠金额', 'double(10,2)', 'BigDecimal', 'preMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (785, '101', 'pay_money', '实付金额', 'double(10,2)', 'BigDecimal', 'payMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:45');
+INSERT INTO `gen_table_column` VALUES (786, '102', 'category_id', '分类ID', 'bigint(20)', 'Long', 'categoryId', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (787, '102', 'category_name', '分类名称', 'varchar(50)', 'String', 'categoryName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (788, '102', 'parent_id', '父分类ID', 'bigint(20)', 'Long', 'parentId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (789, '102', 'category_type', '分类类型', 'char(1)', 'String', 'categoryType', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'select', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (790, '102', 'status', '分类状态', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (791, '102', 'order_num', '显示顺序', 'int(4)', 'Integer', 'orderNum', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (792, '102', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 7, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (793, '102', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 8, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (794, '102', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 9, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (795, '102', 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'datetime', '', 10, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (796, '102', 'remark', '备注', 'varchar(500)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'textarea', '', 11, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:26:54');
+INSERT INTO `gen_table_column` VALUES (797, '103', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:04');
+INSERT INTO `gen_table_column` VALUES (798, '103', 'parent_id', '父级id', 'varchar(255)', 'String', 'parentId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:04');
+INSERT INTO `gen_table_column` VALUES (799, '103', 'name', '城市名', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:04');
+INSERT INTO `gen_table_column` VALUES (800, '104', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (801, '104', 'name', '名字', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (802, '104', 'image_path', '图片', 'varchar(255)', 'String', 'imagePath', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (803, '104', 'activity', '活动', 'varchar(255)', 'String', 'activity', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (804, '104', 'restuarant_id', '饭馆id', 'int(11)', 'Long', 'restuarantId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (805, '104', 'tips', '小介绍', 'varchar(255)', 'String', 'tips', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (806, '104', 'rating_count', '评分数', 'double(10,2)', 'BigDecimal', 'ratingCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (807, '104', 'month_sale', '月销量', 'double(10,0)', 'Long', 'monthSale', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (808, '104', 'description', '描述', 'varchar(255)', 'String', 'description', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (809, '104', 'rating', '评分', 'double(10,2)', 'BigDecimal', 'rating', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (810, '104', 'category_id', '分类id', 'int(11)', 'Long', 'categoryId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 11, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (811, '104', 'surplus_count', '剩余数量', 'int(1)', 'Integer', 'surplusCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 12, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (812, '104', 'price', '单价', 'decimal(10,2)', 'BigDecimal', 'price', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 13, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (813, '104', 'post_fee', '邮费', 'double(10,2)', 'BigDecimal', 'postFee', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 14, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:12');
+INSERT INTO `gen_table_column` VALUES (814, '105', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (815, '105', 'user_name', '创建用户名', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (816, '105', 'created_time', '创建时间', 'datetime', 'Date', 'createdTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (817, '105', 'total_count', '总数量', 'int(10)', 'Integer', 'totalCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (818, '105', 'total_price', '总价钱', 'double(10,2)', 'BigDecimal', 'totalPrice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (819, '105', 'pre_money', '优惠金额', 'double(10,2)', 'BigDecimal', 'preMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (820, '105', 'post_fee', '邮费', 'double(10,2)', 'BigDecimal', 'postFee', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (821, '105', 'pay_money', '实付金额', 'double(10,2)', 'BigDecimal', 'payMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (822, '105', 'pay_status', '支付状态', 'int(2)', 'Integer', 'payStatus', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 9, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (823, '105', 'pay_type', '支付方式', 'varchar(65)', 'String', 'payType', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'select', '', 10, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (824, '105', 'consign_time', '发货时间', 'datetime', 'Date', 'consignTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 11, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (825, '105', 'arrive_time', '预计送达时间', 'datetime', 'Date', 'arriveTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 12, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (826, '105', 'address_id', '地址id', 'int(11)', 'Long', 'addressId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 13, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (827, '105', 'end_time', '交易完成时间', 'datetime', 'Date', 'endTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 14, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (828, '105', 'invoice', '发票', 'varchar(255)', 'String', 'invoice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 15, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:20');
+INSERT INTO `gen_table_column` VALUES (829, '106', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (830, '106', 'order_id', NULL, 'int(11)', 'Long', 'orderId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (831, '106', 'food_id', NULL, 'int(11)', 'Long', 'foodId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (832, '106', 'name', '商品名字', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (833, '106', 'total_count', '商品件数', 'varchar(255)', 'String', 'totalCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (834, '106', 'food_price', '单价', 'double(10,2)', 'BigDecimal', 'foodPrice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (835, '106', 'total_price', '商品总额', 'double(10,2)', 'BigDecimal', 'totalPrice', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (836, '106', 'pre_money', '优惠金额', 'double(10,2)', 'BigDecimal', 'preMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (837, '106', 'post_fee', '邮费', 'double(10,2)', 'BigDecimal', 'postFee', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (838, '106', 'pay_money', '支付金额', 'double(10,2)', 'BigDecimal', 'payMoney', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:42');
+INSERT INTO `gen_table_column` VALUES (839, '107', 'id', NULL, 'int(11)', 'Long', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51');
+INSERT INTO `gen_table_column` VALUES (840, '107', 'restuarant_id', '饭馆id', 'int(11)', 'Long', 'restuarantId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51');
+INSERT INTO `gen_table_column` VALUES (841, '107', 'score', '评分', 'varchar(255)', 'String', 'score', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51');
+INSERT INTO `gen_table_column` VALUES (842, '107', 'rating_at', '评分时间', 'datetime', 'Date', 'ratingAt', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 4, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51');
+INSERT INTO `gen_table_column` VALUES (843, '107', 'user_name', '用户名', 'varchar(255)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51');
+INSERT INTO `gen_table_column` VALUES (844, '107', 'food_id', '食物id', 'int(11)', 'Long', 'foodId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:00', '', '2020-09-21 14:27:51');
+INSERT INTO `gen_table_column` VALUES (845, '108', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (846, '108', 'name', '商铺名', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (847, '108', 'province_name', '省', 'varchar(255)', 'String', 'provinceName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (848, '108', 'city_name', '市', 'varchar(255)', 'String', 'cityName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (849, '108', 'area_name', '县/区', 'varchar(255)', 'String', 'areaName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (850, '108', 'detail', '详细地址', 'varchar(255)', 'String', 'detail', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (851, '108', 'latitude', '纬度', 'varchar(255)', 'String', 'latitude', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (852, '108', 'longitude', '经度', 'varchar(255)', 'String', 'longitude', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (853, '108', 'phone', '电话', 'varchar(255)', 'String', 'phone', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (854, '108', 'image_path', '图片路径', 'varchar(255)', 'String', 'imagePath', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (855, '108', 'status', '状态', 'varchar(255)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 11, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (856, '108', 'promotion_info', '促销信息', 'varchar(255)', 'String', 'promotionInfo', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 12, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (857, '108', 'description', '描述', 'varchar(255)', 'String', 'description', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 13, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (858, '108', 'delivery_mode', '配送方式', 'varchar(255)', 'String', 'deliveryMode', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 14, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (859, '108', 'is_new', '新店', 'varchar(255)', 'String', 'isNew', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 15, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (860, '108', 'start_time', '营业开始时间', 'datetime', 'Date', 'startTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 16, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
+INSERT INTO `gen_table_column` VALUES (861, '108', 'end_time', '营业结束时间', 'datetime', 'Date', 'endTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 17, 'admin', '2020-09-21 14:25:15', '', '2020-09-21 14:28:00');
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -527,7 +596,7 @@ CREATE TABLE `qrtz_scheduler_state`  (
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'DESKTOP-2LVMILM1600433366182', 1600433535194, 15000);
+INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'DESKTOP-2LVMILM1600776871019', 1600779485743, 15000);
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -604,9 +673,9 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1600433370000, -1, 5, 'PAUSED', 'CRON', 1600433366000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1600433370000, -1, 5, 'PAUSED', 'CRON', 1600433366000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1600433380000, -1, 5, 'PAUSED', 'CRON', 1600433366000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1600776880000, -1, 5, 'PAUSED', 'CRON', 1600776871000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1600776885000, -1, 5, 'PAUSED', 'CRON', 1600776871000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1600776880000, -1, 5, 'PAUSED', 'CRON', 1600776871000, 0, NULL, 2, '');
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -658,7 +727,7 @@ CREATE TABLE `sys_dept`  (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (100, 0, '0', '若依科技', 0, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00');
+INSERT INTO `sys_dept` VALUES (100, 0, '0', '亮子科技', 0, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11:33:00', 'admin', '2020-09-21 14:49:43');
 INSERT INTO `sys_dept` VALUES (101, 100, '0,100', '深圳总公司', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00');
 INSERT INTO `sys_dept` VALUES (102, 100, '0,100', '长沙分公司', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00');
 INSERT INTO `sys_dept` VALUES (103, 101, '0,100,101', '研发部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00');
@@ -818,7 +887,7 @@ CREATE TABLE `sys_logininfor`  (
   `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime(0) NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 152 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 184 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -875,6 +944,38 @@ INSERT INTO `sys_logininfor` VALUES (148, 'zhangsan', '127.0.0.1', '内网IP', '
 INSERT INTO `sys_logininfor` VALUES (149, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '验证码错误', '2020-09-18 19:45:21');
 INSERT INTO `sys_logininfor` VALUES (150, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '验证码错误', '2020-09-18 19:45:29');
 INSERT INTO `sys_logininfor` VALUES (151, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-18 19:45:41');
+INSERT INTO `sys_logininfor` VALUES (152, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-19 14:33:56');
+INSERT INTO `sys_logininfor` VALUES (153, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-20 14:22:30');
+INSERT INTO `sys_logininfor` VALUES (154, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-20 19:18:38');
+INSERT INTO `sys_logininfor` VALUES (155, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-20 19:23:10');
+INSERT INTO `sys_logininfor` VALUES (156, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-20 20:15:19');
+INSERT INTO `sys_logininfor` VALUES (157, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-21 09:10:01');
+INSERT INTO `sys_logininfor` VALUES (158, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-21 10:27:43');
+INSERT INTO `sys_logininfor` VALUES (159, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-21 14:01:21');
+INSERT INTO `sys_logininfor` VALUES (160, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 10:38:45');
+INSERT INTO `sys_logininfor` VALUES (161, 'zhangsan', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2020-09-22 10:45:02');
+INSERT INTO `sys_logininfor` VALUES (162, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-22 10:46:38');
+INSERT INTO `sys_logininfor` VALUES (163, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 11:40:21');
+INSERT INTO `sys_logininfor` VALUES (164, 'zhangsan', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2020-09-22 11:41:18');
+INSERT INTO `sys_logininfor` VALUES (165, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-22 11:41:22');
+INSERT INTO `sys_logininfor` VALUES (166, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2020-09-22 11:42:12');
+INSERT INTO `sys_logininfor` VALUES (167, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 11:42:22');
+INSERT INTO `sys_logininfor` VALUES (168, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 14:04:19');
+INSERT INTO `sys_logininfor` VALUES (169, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 17:24:45');
+INSERT INTO `sys_logininfor` VALUES (170, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 17:28:29');
+INSERT INTO `sys_logininfor` VALUES (171, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 17:28:51');
+INSERT INTO `sys_logininfor` VALUES (172, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 17:30:39');
+INSERT INTO `sys_logininfor` VALUES (173, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '验证码错误', '2020-09-22 18:11:23');
+INSERT INTO `sys_logininfor` VALUES (174, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 18:11:28');
+INSERT INTO `sys_logininfor` VALUES (175, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 18:13:41');
+INSERT INTO `sys_logininfor` VALUES (176, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 18:14:50');
+INSERT INTO `sys_logininfor` VALUES (177, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 18:17:51');
+INSERT INTO `sys_logininfor` VALUES (178, 'zhangsan', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2020-09-22 18:25:33');
+INSERT INTO `sys_logininfor` VALUES (179, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 18:30:01');
+INSERT INTO `sys_logininfor` VALUES (180, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '验证码错误', '2020-09-22 20:31:46');
+INSERT INTO `sys_logininfor` VALUES (181, 'zhangsan', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2020-09-22 20:31:52');
+INSERT INTO `sys_logininfor` VALUES (182, 'zhangsan', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2020-09-22 20:52:04');
+INSERT INTO `sys_logininfor` VALUES (183, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2020-09-22 20:52:10');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -899,7 +1000,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2364 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2424 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -992,54 +1093,66 @@ INSERT INTO `sys_menu` VALUES (2312, '活动管理新增', 2310, 2, '#', '', 1, 
 INSERT INTO `sys_menu` VALUES (2313, '活动管理修改', 2310, 3, '#', '', 1, 'F', '0', '0', 'hunger:activity:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (2314, '活动管理删除', 2310, 4, '#', '', 1, 'F', '0', '0', 'hunger:activity:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (2315, '活动管理导出', 2310, 5, '#', '', 1, 'F', '0', '0', 'hunger:activity:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2316, '地址管理', 2000, 1, 'address', 'hunger/address/index', 1, 'C', '0', '0', 'hunger:address:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '地址管理菜单');
-INSERT INTO `sys_menu` VALUES (2317, '地址管理查询', 2316, 1, '#', '', 1, 'F', '0', '0', 'hunger:address:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2318, '地址管理新增', 2316, 2, '#', '', 1, 'F', '0', '0', 'hunger:address:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2319, '地址管理修改', 2316, 3, '#', '', 1, 'F', '0', '0', 'hunger:address:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2320, '地址管理删除', 2316, 4, '#', '', 1, 'F', '0', '0', 'hunger:address:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2321, '地址管理导出', 2316, 5, '#', '', 1, 'F', '0', '0', 'hunger:address:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2322, '购物车管理', 2000, 1, 'cart', 'hunger/cart/index', 1, 'C', '0', '0', 'hunger:cart:list', 'build', 'admin', '2018-03-01 00:00:00', 'admin', '2020-09-17 16:12:37', '购物车菜单');
-INSERT INTO `sys_menu` VALUES (2323, '购物车查询', 2322, 1, '#', '', 1, 'F', '0', '0', 'hunger:cart:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2324, '购物车新增', 2322, 2, '#', '', 1, 'F', '0', '0', 'hunger:cart:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2325, '购物车修改', 2322, 3, '#', '', 1, 'F', '0', '0', 'hunger:cart:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2326, '购物车删除', 2322, 4, '#', '', 1, 'F', '0', '0', 'hunger:cart:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2327, '购物车导出', 2322, 5, '#', '', 1, 'F', '0', '0', 'hunger:cart:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2328, '分类信息', 2000, 1, 'category', 'hunger/category/index', 1, 'C', '0', '0', 'hunger:category:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '分类信息菜单');
-INSERT INTO `sys_menu` VALUES (2329, '分类信息查询', 2328, 1, '#', '', 1, 'F', '0', '0', 'hunger:category:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2330, '分类信息新增', 2328, 2, '#', '', 1, 'F', '0', '0', 'hunger:category:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2331, '分类信息修改', 2328, 3, '#', '', 1, 'F', '0', '0', 'hunger:category:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2332, '分类信息删除', 2328, 4, '#', '', 1, 'F', '0', '0', 'hunger:category:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2333, '分类信息导出', 2328, 5, '#', '', 1, 'F', '0', '0', 'hunger:category:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2334, '城市管理', 2000, 1, 'city', 'hunger/city/index', 1, 'C', '0', '0', 'hunger:city:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '城市管理菜单');
-INSERT INTO `sys_menu` VALUES (2335, '城市管理查询', 2334, 1, '#', '', 1, 'F', '0', '0', 'hunger:city:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2336, '城市管理新增', 2334, 2, '#', '', 1, 'F', '0', '0', 'hunger:city:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2337, '城市管理修改', 2334, 3, '#', '', 1, 'F', '0', '0', 'hunger:city:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2338, '城市管理删除', 2334, 4, '#', '', 1, 'F', '0', '0', 'hunger:city:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2339, '城市管理导出', 2334, 5, '#', '', 1, 'F', '0', '0', 'hunger:city:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2340, '食物管理', 2000, 1, 'food', 'hunger/food/index', 1, 'C', '0', '0', 'hunger:food:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '食物管理菜单');
-INSERT INTO `sys_menu` VALUES (2341, '食物管理查询', 2340, 1, '#', '', 1, 'F', '0', '0', 'hunger:food:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2342, '食物管理新增', 2340, 2, '#', '', 1, 'F', '0', '0', 'hunger:food:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2343, '食物管理修改', 2340, 3, '#', '', 1, 'F', '0', '0', 'hunger:food:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2344, '食物管理删除', 2340, 4, '#', '', 1, 'F', '0', '0', 'hunger:food:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2345, '食物管理导出', 2340, 5, '#', '', 1, 'F', '0', '0', 'hunger:food:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2346, '订单管理', 2000, 1, 'order', 'hunger/order/index', 1, 'C', '0', '0', 'hunger:order:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '订单管理菜单');
-INSERT INTO `sys_menu` VALUES (2347, '订单管理查询', 2346, 1, '#', '', 1, 'F', '0', '0', 'hunger:order:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2348, '订单管理新增', 2346, 2, '#', '', 1, 'F', '0', '0', 'hunger:order:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2349, '订单管理修改', 2346, 3, '#', '', 1, 'F', '0', '0', 'hunger:order:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2350, '订单管理删除', 2346, 4, '#', '', 1, 'F', '0', '0', 'hunger:order:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2351, '订单管理导出', 2346, 5, '#', '', 1, 'F', '0', '0', 'hunger:order:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2352, '评分管理', 2000, 1, 'rating', 'hunger/rating/index', 1, 'C', '0', '0', 'hunger:rating:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '评分管理菜单');
-INSERT INTO `sys_menu` VALUES (2353, '评分管理查询', 2352, 1, '#', '', 1, 'F', '0', '0', 'hunger:rating:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2354, '评分管理新增', 2352, 2, '#', '', 1, 'F', '0', '0', 'hunger:rating:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2355, '评分管理修改', 2352, 3, '#', '', 1, 'F', '0', '0', 'hunger:rating:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2356, '评分管理删除', 2352, 4, '#', '', 1, 'F', '0', '0', 'hunger:rating:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2357, '评分管理导出', 2352, 5, '#', '', 1, 'F', '0', '0', 'hunger:rating:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2358, '商铺管理', 2000, 1, 'shop', 'hunger/shop/index', 1, 'C', '0', '0', '', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '商铺管理菜单');
-INSERT INTO `sys_menu` VALUES (2359, '商铺管理查询', 2358, 1, '#', '', 1, 'F', '0', '0', 'hunger:shop:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2360, '商铺管理新增', 2358, 2, '#', '', 1, 'F', '0', '0', 'hunger:shop:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2361, '商铺管理修改', 2358, 3, '#', '', 1, 'F', '0', '0', 'hunger:shop:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2362, '商铺管理删除', 2358, 4, '#', '', 1, 'F', '0', '0', 'hunger:shop:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (2363, '商铺管理导出', 2358, 5, '#', '', 1, 'F', '0', '0', 'hunger:shop:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2364, '地址管理', 2000, 1, 'address', 'hunger/address/index', 1, 'C', '0', '0', 'hunger:address:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '地址菜单');
+INSERT INTO `sys_menu` VALUES (2365, '地址查询', 2364, 1, '#', '', 1, 'F', '0', '0', 'hunger:address:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2366, '地址新增', 2364, 2, '#', '', 1, 'F', '0', '0', 'hunger:address:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2367, '地址修改', 2364, 3, '#', '', 1, 'F', '0', '0', 'hunger:address:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2368, '地址删除', 2364, 4, '#', '', 1, 'F', '0', '0', 'hunger:address:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2369, '地址导出', 2364, 5, '#', '', 1, 'F', '0', '0', 'hunger:address:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2370, '购物车详情管理', 2000, 1, 'cartItem', 'hunger/cartItem/index', 1, 'C', '0', '0', 'hunger:cartItem:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '购物车详情菜单');
+INSERT INTO `sys_menu` VALUES (2371, '购物车详情查询', 2370, 1, '#', '', 1, 'F', '0', '0', 'hunger:cartItem:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2372, '购物车详情新增', 2370, 2, '#', '', 1, 'F', '0', '0', 'hunger:cartItem:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2373, '购物车详情修改', 2370, 3, '#', '', 1, 'F', '0', '0', 'hunger:cartItem:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2374, '购物车详情删除', 2370, 4, '#', '', 1, 'F', '0', '0', 'hunger:cartItem:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2375, '购物车详情导出', 2370, 5, '#', '', 1, 'F', '0', '0', 'hunger:cartItem:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2376, '购物车管理', 2000, 1, 'cart', 'hunger/cart/index', 1, 'C', '0', '0', 'hunger:cart:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '购物车菜单');
+INSERT INTO `sys_menu` VALUES (2377, '购物车查询', 2376, 1, '#', '', 1, 'F', '0', '0', 'hunger:cart:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2378, '购物车新增', 2376, 2, '#', '', 1, 'F', '0', '0', 'hunger:cart:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2379, '购物车修改', 2376, 3, '#', '', 1, 'F', '0', '0', 'hunger:cart:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2380, '购物车删除', 2376, 4, '#', '', 1, 'F', '0', '0', 'hunger:cart:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2381, '购物车导出', 2376, 5, '#', '', 1, 'F', '0', '0', 'hunger:cart:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2382, '分类管理', 2000, 1, 'category', 'hunger/category/index', 1, 'C', '0', '0', 'hunger:category:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '分类信息菜单');
+INSERT INTO `sys_menu` VALUES (2383, '分类信息查询', 2382, 1, '#', '', 1, 'F', '0', '0', 'hunger:category:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2384, '分类信息新增', 2382, 2, '#', '', 1, 'F', '0', '0', 'hunger:category:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2385, '分类信息修改', 2382, 3, '#', '', 1, 'F', '0', '0', 'hunger:category:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2386, '分类信息删除', 2382, 4, '#', '', 1, 'F', '0', '0', 'hunger:category:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2387, '分类信息导出', 2382, 5, '#', '', 1, 'F', '0', '0', 'hunger:category:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2388, '城市管理', 2000, 1, 'city', 'hunger/city/index', 1, 'C', '0', '0', 'hunger:city:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '城市菜单');
+INSERT INTO `sys_menu` VALUES (2389, '城市查询', 2388, 1, '#', '', 1, 'F', '0', '0', 'hunger:city:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2390, '城市新增', 2388, 2, '#', '', 1, 'F', '0', '0', 'hunger:city:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2391, '城市修改', 2388, 3, '#', '', 1, 'F', '0', '0', 'hunger:city:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2392, '城市删除', 2388, 4, '#', '', 1, 'F', '0', '0', 'hunger:city:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2393, '城市导出', 2388, 5, '#', '', 1, 'F', '0', '0', 'hunger:city:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2394, '食物管理', 2000, 1, 'food', 'hunger/food/index', 1, 'C', '0', '0', 'hunger:food:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '食物菜单');
+INSERT INTO `sys_menu` VALUES (2395, '食物查询', 2394, 1, '#', '', 1, 'F', '0', '0', 'hunger:food:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2396, '食物新增', 2394, 2, '#', '', 1, 'F', '0', '0', 'hunger:food:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2397, '食物修改', 2394, 3, '#', '', 1, 'F', '0', '0', 'hunger:food:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2398, '食物删除', 2394, 4, '#', '', 1, 'F', '0', '0', 'hunger:food:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2399, '食物导出', 2394, 5, '#', '', 1, 'F', '0', '0', 'hunger:food:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2400, '订单详情管理', 2000, 1, 'orderItem', 'hunger/orderItem/index', 1, 'C', '0', '0', 'hunger:orderItem:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '订单详情菜单');
+INSERT INTO `sys_menu` VALUES (2401, '订单详情查询', 2400, 1, '#', '', 1, 'F', '0', '0', 'hunger:orderItem:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2402, '订单详情新增', 2400, 2, '#', '', 1, 'F', '0', '0', 'hunger:orderItem:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2403, '订单详情修改', 2400, 3, '#', '', 1, 'F', '0', '0', 'hunger:orderItem:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2404, '订单详情删除', 2400, 4, '#', '', 1, 'F', '0', '0', 'hunger:orderItem:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2405, '订单详情导出', 2400, 5, '#', '', 1, 'F', '0', '0', 'hunger:orderItem:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2406, '订单管理', 2000, 1, 'order', 'hunger/order/index', 1, 'C', '0', '0', 'hunger:order:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '订单总菜单');
+INSERT INTO `sys_menu` VALUES (2407, '订单总查询', 2406, 1, '#', '', 1, 'F', '0', '0', 'hunger:order:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2408, '订单总新增', 2406, 2, '#', '', 1, 'F', '0', '0', 'hunger:order:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2409, '订单总修改', 2406, 3, '#', '', 1, 'F', '0', '0', 'hunger:order:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2410, '订单总删除', 2406, 4, '#', '', 1, 'F', '0', '0', 'hunger:order:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2411, '订单总导出', 2406, 5, '#', '', 1, 'F', '0', '0', 'hunger:order:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2412, '评分管理', 2000, 1, 'rating', 'hunger/rating/index', 1, 'C', '0', '0', 'hunger:rating:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '评分菜单');
+INSERT INTO `sys_menu` VALUES (2413, '评分查询', 2412, 1, '#', '', 1, 'F', '0', '0', 'hunger:rating:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2414, '评分新增', 2412, 2, '#', '', 1, 'F', '0', '0', 'hunger:rating:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2415, '评分修改', 2412, 3, '#', '', 1, 'F', '0', '0', 'hunger:rating:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2416, '评分删除', 2412, 4, '#', '', 1, 'F', '0', '0', 'hunger:rating:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2417, '评分导出', 2412, 5, '#', '', 1, 'F', '0', '0', 'hunger:rating:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2418, '商铺管理', 2000, 1, 'shop', 'hunger/shop/index', 1, 'C', '0', '0', 'hunger:shop:list', 'build', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '商铺菜单');
+INSERT INTO `sys_menu` VALUES (2419, '商铺查询', 2418, 1, '#', '', 1, 'F', '0', '0', 'hunger:shop:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2420, '商铺新增', 2418, 2, '#', '', 1, 'F', '0', '0', 'hunger:shop:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2421, '商铺修改', 2418, 3, '#', '', 1, 'F', '0', '0', 'hunger:shop:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2422, '商铺删除', 2418, 4, '#', '', 1, 'F', '0', '0', 'hunger:shop:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2423, '商铺导出', 2418, 5, '#', '', 1, 'F', '0', '0', 'hunger:shop:export', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1087,7 +1200,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 208 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 241 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1200,6 +1313,39 @@ INSERT INTO `sys_oper_log` VALUES (204, '代码生成', 2, 'com.ruoyi.generator.
 INSERT INTO `sys_oper_log` VALUES (205, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', 'null', 0, NULL, '2020-09-17 16:07:28');
 INSERT INTO `sys_oper_log` VALUES (206, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"visible\":\"0\",\"icon\":\"#\",\"orderNum\":\"1\",\"menuName\":\"购物车管理\",\"params\":{},\"parentId\":2000,\"path\":\"cart\",\"component\":\"hunger/cart/index\",\"children\":[],\"createTime\":1519833600000,\"updateBy\":\"admin\",\"isFrame\":\"1\",\"menuId\":2322,\"menuType\":\"C\",\"perms\":\"hunger:cart:list\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-17 16:12:38');
 INSERT INTO `sys_oper_log` VALUES (207, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"visible\":\"0\",\"icon\":\"build\",\"orderNum\":\"1\",\"menuName\":\"活动管理\",\"params\":{},\"parentId\":2000,\"path\":\"activity\",\"component\":\"hunger/activity/index\",\"children\":[],\"createTime\":1519833600000,\"updateBy\":\"admin\",\"isFrame\":\"1\",\"menuId\":2310,\"menuType\":\"C\",\"perms\":\"hunger:activity:list\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-17 21:53:33');
+INSERT INTO `sys_oper_log` VALUES (208, '商铺', 1, 'com.ruoyi.web.controller.hunger.ElShopController.add()', 'POST', 1, 'admin', NULL, '/hunger/shop', '127.0.0.1', '内网IP', '{\"cityName\":\"成都\",\"areaName\":\"双流\",\"name\":\"五战烤鸭\",\"detail\":\"学府路一段\",\"provinceName\":\"四川\",\"status\":\"0\"}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'id\' doesn\'t have a default value\r\n### The error may exist in com/ruoyi/hunger/mapper/ElShopMapper.java (best guess)\r\n### The error may involve com.ruoyi.hunger.mapper.ElShopMapper.insert-Inline\r\n### The error occurred while setting parameters\r\n### SQL: INSERT INTO el_shop  ( name, province_name, city_name, area_name, detail,     status )  VALUES  ( ?, ?, ?, ?, ?,     ? )\r\n### Cause: java.sql.SQLException: Field \'id\' doesn\'t have a default value\n; Field \'id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'id\' doesn\'t have a default value', '2020-09-20 20:18:14');
+INSERT INTO `sys_oper_log` VALUES (209, '商铺', 1, 'com.ruoyi.web.controller.hunger.ElShopController.add()', 'POST', 1, 'admin', NULL, '/hunger/shop', '127.0.0.1', '内网IP', '{\"cityName\":\"成都\",\"areaName\":\"双流\",\"name\":\"五战烤鸭\",\"detail\":\"学府路一段\",\"id\":3,\"provinceName\":\"四川\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-20 20:20:01');
+INSERT INTO `sys_oper_log` VALUES (210, '用户管理', 2, 'com.ruoyi.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"roles\":[{\"flag\":false,\"roleId\":2,\"admin\":false,\"dataScope\":\"2\",\"params\":{},\"roleSort\":\"2\",\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"status\":\"0\"}],\"phonenumber\":\"13212341234\",\"admin\":false,\"delFlag\":\"0\",\"password\":\"\",\"updateBy\":\"admin\",\"postIds\":[4],\"loginIp\":\"\",\"email\":\"gd@gmail.com\",\"nickName\":\"火云邪神\",\"sex\":\"1\",\"deptId\":102,\"avatar\":\"\",\"dept\":{\"deptName\":\"长沙分公司\",\"leader\":\"若依\",\"deptId\":102,\"orderNum\":\"2\",\"params\":{},\"parentId\":100,\"children\":[],\"status\":\"0\"},\"params\":{},\"userName\":\"zhangsan\",\"userId\":3,\"createBy\":\"\",\"roleIds\":[2],\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-20 20:52:32');
+INSERT INTO `sys_oper_log` VALUES (211, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"flag\":false,\"roleId\":2,\"admin\":false,\"remark\":\"普通角色\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"params\":{},\"roleSort\":\"2\",\"createTime\":1521171180000,\"updateBy\":\"admin\",\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"menuIds\":[2000,2310,2311,2312,2313,2314,2315,2316,2317,2318,2319,2320,2321,2322,2323,2324,2325,2326,2327,2328,2329,2330,2331,2332,2333,2334,2335,2336,2337,2338,2339,2340,2341,2342,2343,2344,2345,2346,2347,2348,2349,2350,2351,2352,2353,2354,2355,2356,2357,2358,2359,2360,2361,2362,2363,100,1001,1002,1003,1004,1005,1006,1007,1],\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-20 21:15:22');
+INSERT INTO `sys_oper_log` VALUES (212, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/69,70,71,72,73,74,75,76,77', '127.0.0.1', '内网IP', '{tableIds=69,70,71,72,73,74,75,76,77}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 10:28:01');
+INSERT INTO `sys_oper_log` VALUES (213, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', 'el_activity,el_address,el_cart,el_category,el_city,el_food,el_order,el_rating', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 10:28:24');
+INSERT INTO `sys_oper_log` VALUES (214, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', 'el_shop', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 10:28:32');
+INSERT INTO `sys_oper_log` VALUES (215, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', 'null', 0, NULL, '2020-09-21 10:28:57');
+INSERT INTO `sys_oper_log` VALUES (216, '食物', 2, 'com.ruoyi.web.controller.hunger.ElFoodController.edit()', 'PUT', 1, 'admin', NULL, '/hunger/food', '127.0.0.1', '内网IP', '{\"monthSale\":\"400\",\"activity\":\"0\",\"imagePath\":\"/data/1.png\",\"rating\":\"4.9\",\"description\":\"好吃的不得了\",\"ratingCount\":\"300\",\"tips\":\"月销100\",\"surplusCount\":100,\"price\":9.9,\"name\":\"宫保鸡丁\",\"id\":1,\"categoryId\":1,\"restuarantId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 10:40:16');
+INSERT INTO `sys_oper_log` VALUES (217, '食物', 1, 'com.ruoyi.web.controller.hunger.ElFoodController.add()', 'POST', 1, 'admin', NULL, '/hunger/food', '127.0.0.1', '内网IP', '{\"ratingCount\":\"4.8\",\"tips\":\"辣的你心慌\",\"surplusCount\":10,\"price\":19.9,\"name\":\"麻辣香锅\",\"id\":2,\"categoryId\":1,\"restuarantId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 10:41:28');
+INSERT INTO `sys_oper_log` VALUES (218, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/78,79,80,81,82,83,84,85,86', '127.0.0.1', '内网IP', '{tableIds=78,79,80,81,82,83,84,85,86}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:01:40');
+INSERT INTO `sys_oper_log` VALUES (219, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', 'el_activity,el_address,el_cart,el_cart_item,el_category,el_city,el_food,el_order,el_order_item,el_rating', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:22:35');
+INSERT INTO `sys_oper_log` VALUES (220, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', 'el_shop', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:22:46');
+INSERT INTO `sys_oper_log` VALUES (221, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/87,88,89,90,91,92,93,94,95,96', '127.0.0.1', '内网IP', '{tableIds=87,88,89,90,91,92,93,94,95,96}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:24:48');
+INSERT INTO `sys_oper_log` VALUES (222, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/97', '127.0.0.1', '内网IP', '{tableIds=97}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:24:53');
+INSERT INTO `sys_oper_log` VALUES (223, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', 'el_activity,el_address,el_cart,el_cart_item,el_category,el_city,el_food,el_order,el_order_item,el_rating', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:25:00');
+INSERT INTO `sys_oper_log` VALUES (224, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', 'el_shop', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:25:15');
+INSERT INTO `sys_oper_log` VALUES (225, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/98', '127.0.0.1', '内网IP', '{tableIds=98}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:25:27');
+INSERT INTO `sys_oper_log` VALUES (226, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":762,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":99,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":763,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"detail\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"详细地址\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"EQ\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":99,\"pk\":false,\"columnName\":\"detail\"},{\"usableColumn\":false,\"columnId\":764,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"userName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"用户名地址\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":99,\"pk\":false,\"columnName\":\"user_name\"},{\"usableColumn\":false,\"columnId\":765,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"provinceName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"省\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":99,\"pk\":false,\"columnName\":\"province_name\"},{\"usableColumn\":false,\"colum', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:25:56');
+INSERT INTO `sys_oper_log` VALUES (227, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":771,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":100,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":772,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"userName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"用户名\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":100,\"pk\":false,\"columnName\":\"user_name\"},{\"usableColumn\":false,\"columnId\":773,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"totalCount\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"总数\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"Integer\",\"queryType\":\"EQ\",\"columnType\":\"int(10)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":100,\"pk\":false,\"columnName\":\"total_count\"},{\"usableColumn\":false,\"columnId\":774,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"totalPrice\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"总价\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"BigDecimal\",\"queryType\":\"EQ\",\"columnType\":\"double(10,2)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":100,\"pk\":false,\"columnName\":\"total_price\"},{\"usableColumn\":false,\"c', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:26:04');
+INSERT INTO `sys_oper_log` VALUES (228, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":777,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":101,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":778,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"cartId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"购物车id\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":101,\"pk\":false,\"columnName\":\"cart_id\"},{\"usableColumn\":false,\"columnId\":779,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"foodId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"食品id\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":101,\"pk\":false,\"columnName\":\"food_id\"},{\"usableColumn\":false,\"columnId\":780,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"foodName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"食品名\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":101,\"pk\":false,\"columnName\":\"food_name\"},{\"usableColumn\":false,\"columnId\":781,\"isIncrement', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:26:46');
+INSERT INTO `sys_oper_log` VALUES (229, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":786,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"categoryId\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"columnComment\":\"分类ID\",\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":102,\"pk\":true,\"columnName\":\"category_id\"},{\"usableColumn\":false,\"columnId\":787,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"categoryName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"分类名称\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(50)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":102,\"pk\":false,\"columnName\":\"category_name\"},{\"usableColumn\":true,\"columnId\":788,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":true,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"parentId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"父分类ID\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":102,\"pk\":false,\"columnName\":\"parent_id\"},{\"usableColumn\":false,\"columnId\":789,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"categoryType\",\"htmlType\":\"select\",\"edit\":true,\"query\":true,\"columnComment\":\"分类类型\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"EQ\",\"columnType\":\"char(1)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":102,\"pk\":false,\"columnN', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:26:55');
+INSERT INTO `sys_oper_log` VALUES (230, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":797,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":103,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":true,\"columnId\":798,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":true,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"parentId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"父级id\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"EQ\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":103,\"pk\":false,\"columnName\":\"parent_id\"},{\"usableColumn\":false,\"columnId\":799,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"name\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"城市名\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":103,\"pk\":false,\"columnName\":\"name\"}],\"businessName\":\"city\",\"moduleName\":\"hunger\",\"className\":\"ElCity\",\"tableName\":\"el_city\",\"crud\":true,\"options\":\"{\\\"parentMenuId\\\":2000}\",\"genType\":\"0\",\"packageName\":\"com.ruoyi.hunger\",\"functionName\":\"城市\",\"tree\":false,\"tableComment\":\"城市表\",\"params\":{\"parentMenuId\":2000},\"tplCategory\":\"crud\",\"parentMenuId\":\"2000\",\"tableId\":103,\"genPath\":\"/\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:27:05');
+INSERT INTO `sys_oper_log` VALUES (231, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":800,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":104,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":801,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"name\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"名字\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":104,\"pk\":false,\"columnName\":\"name\"},{\"usableColumn\":false,\"columnId\":802,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"imagePath\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"图片\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"EQ\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":104,\"pk\":false,\"columnName\":\"image_path\"},{\"usableColumn\":false,\"columnId\":803,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"activity\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"活动\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"EQ\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":104,\"pk\":false,\"columnName\":\"activity\"},{\"usableColumn\":false,\"columnId\":804,\"isI', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:27:13');
+INSERT INTO `sys_oper_log` VALUES (232, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":814,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":105,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":815,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"userName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"创建用户名\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":105,\"pk\":false,\"columnName\":\"user_name\"},{\"usableColumn\":false,\"columnId\":816,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"createdTime\",\"htmlType\":\"datetime\",\"edit\":true,\"query\":true,\"columnComment\":\"创建时间\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"Date\",\"queryType\":\"EQ\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":105,\"pk\":false,\"columnName\":\"created_time\"},{\"usableColumn\":false,\"columnId\":817,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"totalCount\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"总数量\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"Integer\",\"queryType\":\"EQ\",\"columnType\":\"int(10)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":105,\"pk\":false,\"columnName\":\"total_count\"},{\"usableColumn\":false,\"c', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:27:21');
+INSERT INTO `sys_oper_log` VALUES (233, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":829,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":106,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":830,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":true,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"isRequired\":\"1\",\"javaField\":\"orderId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":106,\"pk\":false,\"columnName\":\"order_id\"},{\"usableColumn\":false,\"columnId\":831,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":true,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"isRequired\":\"1\",\"javaField\":\"foodId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":106,\"pk\":false,\"columnName\":\"food_id\"},{\"usableColumn\":false,\"columnId\":832,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"name\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"商品名字\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":106,\"pk\":false,\"columnName\":\"name\"},{\"usableColumn\":false,\"columnId\":833,\"isIncrement\":\"0\",\"increment\":fal', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:27:42');
+INSERT INTO `sys_oper_log` VALUES (234, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":839,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669500000,\"tableId\":107,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":840,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":true,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"isRequired\":\"1\",\"javaField\":\"restuarantId\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"饭馆id\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":107,\"pk\":false,\"columnName\":\"restuarant_id\"},{\"usableColumn\":false,\"columnId\":841,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"score\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"评分\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"EQ\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":107,\"pk\":false,\"columnName\":\"score\"},{\"usableColumn\":false,\"columnId\":842,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"ratingAt\",\"htmlType\":\"datetime\",\"edit\":true,\"query\":true,\"columnComment\":\"评分时间\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"Date\",\"queryType\":\"EQ\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669500000,\"isEdit\":\"1\",\"tableId\":107,\"pk\":false,\"columnName\":\"rating_at\"},{\"usableColumn\":false,\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:27:52');
+INSERT INTO `sys_oper_log` VALUES (235, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"functionAuthor\":\"gourddoll\",\"columns\":[{\"usableColumn\":false,\"columnId\":845,\"isIncrement\":\"1\",\"increment\":true,\"insert\":true,\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"id\",\"htmlType\":\"input\",\"edit\":false,\"query\":false,\"sort\":1,\"list\":false,\"params\":{},\"javaType\":\"Long\",\"queryType\":\"EQ\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"isPk\":\"1\",\"createTime\":1600669515000,\"tableId\":108,\"pk\":true,\"columnName\":\"id\"},{\"usableColumn\":false,\"columnId\":846,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"name\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"商铺名\",\"isQuery\":\"1\",\"sort\":2,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669515000,\"isEdit\":\"1\",\"tableId\":108,\"pk\":false,\"columnName\":\"name\"},{\"usableColumn\":false,\"columnId\":847,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"provinceName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"省\",\"isQuery\":\"1\",\"sort\":3,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669515000,\"isEdit\":\"1\",\"tableId\":108,\"pk\":false,\"columnName\":\"province_name\"},{\"usableColumn\":false,\"columnId\":848,\"isIncrement\":\"0\",\"increment\":false,\"insert\":true,\"isList\":\"1\",\"dictType\":\"\",\"required\":false,\"superColumn\":false,\"updateBy\":\"\",\"isInsert\":\"1\",\"javaField\":\"cityName\",\"htmlType\":\"input\",\"edit\":true,\"query\":true,\"columnComment\":\"市\",\"isQuery\":\"1\",\"sort\":4,\"list\":true,\"params\":{},\"javaType\":\"String\",\"queryType\":\"LIKE\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"isPk\":\"0\",\"createTime\":1600669515000,\"isEdit\":\"1\",\"tableId\":108,\"pk\":false,\"columnName\":\"city_name\"},{\"usableColumn\":false,\"columnId', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:28:00');
+INSERT INTO `sys_oper_log` VALUES (236, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', 'null', 0, NULL, '2020-09-21 14:29:43');
+INSERT INTO `sys_oper_log` VALUES (237, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"deptName\":\"亮子科技\",\"leader\":\"若依\",\"deptId\":100,\"orderNum\":\"0\",\"delFlag\":\"0\",\"params\":{},\"parentId\":0,\"createBy\":\"admin\",\"children\":[],\"createTime\":1521171180000,\"phone\":\"15888888888\",\"updateBy\":\"admin\",\"ancestors\":\"0\",\"email\":\"ry@qq.com\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-21 14:49:43');
+INSERT INTO `sys_oper_log` VALUES (238, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"flag\":false,\"roleId\":2,\"admin\":false,\"remark\":\"普通角色\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"params\":{},\"roleSort\":\"2\",\"createTime\":1521171180000,\"updateBy\":\"admin\",\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"menuIds\":[2000,2310,2311,2312,2313,2314,2315,2364,2365,2366,2367,2368,2369,2370,2371,2372,2373,2374,2375,2376,2377,2378,2379,2380,2381,2382,2383,2384,2385,2386,2387,2388,2389,2390,2391,2392,2393,2394,2395,2396,2397,2398,2399,2400,2401,2402,2403,2404,2405,2406,2407,2408,2409,2410,2411,2412,2413,2414,2415,2416,2417,2418,2419,2420,2421,2422,2423,100,1001,1002,1003,1004,1005,1006,1007,1],\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-22 11:42:05');
+INSERT INTO `sys_oper_log` VALUES (239, '订单详情', 2, 'com.ruoyi.web.controller.hunger.ElOrderItemController.edit()', 'PUT', 1, 'admin', NULL, '/hunger/orderItem', '127.0.0.1', '内网IP', '{\"foodPrice\":19.9,\"orderId\":1,\"totalPrice\":60,\"foodId\":2,\"name\":\"北京烤鸭\",\"id\":1,\"totalCount\":\"3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-22 20:54:43');
+INSERT INTO `sys_oper_log` VALUES (240, '订单详情', 2, 'com.ruoyi.web.controller.hunger.ElOrderItemController.edit()', 'PUT', 1, 'admin', NULL, '/hunger/orderItem', '127.0.0.1', '内网IP', '{\"foodPrice\":9.9,\"orderId\":1,\"totalPrice\":99,\"foodId\":1,\"name\":\"麻辣香锅\",\"id\":2,\"totalCount\":\"10\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2020-09-22 20:54:52');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1245,13 +1391,13 @@ CREATE TABLE `sys_role`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', '0', '0', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00', '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', '0', '0', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00', '普通角色');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', '0', '0', 'admin', '2018-03-16 11:33:00', 'admin', '2020-09-22 11:42:05', '普通角色');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1284,28 +1430,7 @@ CREATE TABLE `sys_role_menu`  (
 -- Records of sys_role_menu
 -- ----------------------------
 INSERT INTO `sys_role_menu` VALUES (2, 1);
-INSERT INTO `sys_role_menu` VALUES (2, 2);
-INSERT INTO `sys_role_menu` VALUES (2, 3);
-INSERT INTO `sys_role_menu` VALUES (2, 4);
 INSERT INTO `sys_role_menu` VALUES (2, 100);
-INSERT INTO `sys_role_menu` VALUES (2, 101);
-INSERT INTO `sys_role_menu` VALUES (2, 102);
-INSERT INTO `sys_role_menu` VALUES (2, 103);
-INSERT INTO `sys_role_menu` VALUES (2, 104);
-INSERT INTO `sys_role_menu` VALUES (2, 105);
-INSERT INTO `sys_role_menu` VALUES (2, 106);
-INSERT INTO `sys_role_menu` VALUES (2, 107);
-INSERT INTO `sys_role_menu` VALUES (2, 108);
-INSERT INTO `sys_role_menu` VALUES (2, 109);
-INSERT INTO `sys_role_menu` VALUES (2, 110);
-INSERT INTO `sys_role_menu` VALUES (2, 111);
-INSERT INTO `sys_role_menu` VALUES (2, 112);
-INSERT INTO `sys_role_menu` VALUES (2, 113);
-INSERT INTO `sys_role_menu` VALUES (2, 114);
-INSERT INTO `sys_role_menu` VALUES (2, 115);
-INSERT INTO `sys_role_menu` VALUES (2, 500);
-INSERT INTO `sys_role_menu` VALUES (2, 501);
-INSERT INTO `sys_role_menu` VALUES (2, 1000);
 INSERT INTO `sys_role_menu` VALUES (2, 1001);
 INSERT INTO `sys_role_menu` VALUES (2, 1002);
 INSERT INTO `sys_role_menu` VALUES (2, 1003);
@@ -1313,63 +1438,73 @@ INSERT INTO `sys_role_menu` VALUES (2, 1004);
 INSERT INTO `sys_role_menu` VALUES (2, 1005);
 INSERT INTO `sys_role_menu` VALUES (2, 1006);
 INSERT INTO `sys_role_menu` VALUES (2, 1007);
-INSERT INTO `sys_role_menu` VALUES (2, 1008);
-INSERT INTO `sys_role_menu` VALUES (2, 1009);
-INSERT INTO `sys_role_menu` VALUES (2, 1010);
-INSERT INTO `sys_role_menu` VALUES (2, 1011);
-INSERT INTO `sys_role_menu` VALUES (2, 1012);
-INSERT INTO `sys_role_menu` VALUES (2, 1013);
-INSERT INTO `sys_role_menu` VALUES (2, 1014);
-INSERT INTO `sys_role_menu` VALUES (2, 1015);
-INSERT INTO `sys_role_menu` VALUES (2, 1016);
-INSERT INTO `sys_role_menu` VALUES (2, 1017);
-INSERT INTO `sys_role_menu` VALUES (2, 1018);
-INSERT INTO `sys_role_menu` VALUES (2, 1019);
-INSERT INTO `sys_role_menu` VALUES (2, 1020);
-INSERT INTO `sys_role_menu` VALUES (2, 1021);
-INSERT INTO `sys_role_menu` VALUES (2, 1022);
-INSERT INTO `sys_role_menu` VALUES (2, 1023);
-INSERT INTO `sys_role_menu` VALUES (2, 1024);
-INSERT INTO `sys_role_menu` VALUES (2, 1025);
-INSERT INTO `sys_role_menu` VALUES (2, 1026);
-INSERT INTO `sys_role_menu` VALUES (2, 1027);
-INSERT INTO `sys_role_menu` VALUES (2, 1028);
-INSERT INTO `sys_role_menu` VALUES (2, 1029);
-INSERT INTO `sys_role_menu` VALUES (2, 1030);
-INSERT INTO `sys_role_menu` VALUES (2, 1031);
-INSERT INTO `sys_role_menu` VALUES (2, 1032);
-INSERT INTO `sys_role_menu` VALUES (2, 1033);
-INSERT INTO `sys_role_menu` VALUES (2, 1034);
-INSERT INTO `sys_role_menu` VALUES (2, 1035);
-INSERT INTO `sys_role_menu` VALUES (2, 1036);
-INSERT INTO `sys_role_menu` VALUES (2, 1037);
-INSERT INTO `sys_role_menu` VALUES (2, 1038);
-INSERT INTO `sys_role_menu` VALUES (2, 1039);
-INSERT INTO `sys_role_menu` VALUES (2, 1040);
-INSERT INTO `sys_role_menu` VALUES (2, 1041);
-INSERT INTO `sys_role_menu` VALUES (2, 1042);
-INSERT INTO `sys_role_menu` VALUES (2, 1043);
-INSERT INTO `sys_role_menu` VALUES (2, 1044);
-INSERT INTO `sys_role_menu` VALUES (2, 1045);
-INSERT INTO `sys_role_menu` VALUES (2, 1046);
-INSERT INTO `sys_role_menu` VALUES (2, 1047);
-INSERT INTO `sys_role_menu` VALUES (2, 1048);
-INSERT INTO `sys_role_menu` VALUES (2, 1049);
-INSERT INTO `sys_role_menu` VALUES (2, 1050);
-INSERT INTO `sys_role_menu` VALUES (2, 1051);
-INSERT INTO `sys_role_menu` VALUES (2, 1052);
-INSERT INTO `sys_role_menu` VALUES (2, 1053);
-INSERT INTO `sys_role_menu` VALUES (2, 1054);
-INSERT INTO `sys_role_menu` VALUES (2, 1055);
-INSERT INTO `sys_role_menu` VALUES (2, 1056);
-INSERT INTO `sys_role_menu` VALUES (2, 1057);
-INSERT INTO `sys_role_menu` VALUES (2, 1058);
-INSERT INTO `sys_role_menu` VALUES (2, 1059);
-INSERT INTO `sys_role_menu` VALUES (2, 1060);
-INSERT INTO `sys_role_menu` VALUES (2, 2346);
-INSERT INTO `sys_role_menu` VALUES (2, 2347);
-INSERT INTO `sys_role_menu` VALUES (2, 2348);
-INSERT INTO `sys_role_menu` VALUES (2, 2349);
+INSERT INTO `sys_role_menu` VALUES (2, 2000);
+INSERT INTO `sys_role_menu` VALUES (2, 2310);
+INSERT INTO `sys_role_menu` VALUES (2, 2311);
+INSERT INTO `sys_role_menu` VALUES (2, 2312);
+INSERT INTO `sys_role_menu` VALUES (2, 2313);
+INSERT INTO `sys_role_menu` VALUES (2, 2314);
+INSERT INTO `sys_role_menu` VALUES (2, 2315);
+INSERT INTO `sys_role_menu` VALUES (2, 2364);
+INSERT INTO `sys_role_menu` VALUES (2, 2365);
+INSERT INTO `sys_role_menu` VALUES (2, 2366);
+INSERT INTO `sys_role_menu` VALUES (2, 2367);
+INSERT INTO `sys_role_menu` VALUES (2, 2368);
+INSERT INTO `sys_role_menu` VALUES (2, 2369);
+INSERT INTO `sys_role_menu` VALUES (2, 2370);
+INSERT INTO `sys_role_menu` VALUES (2, 2371);
+INSERT INTO `sys_role_menu` VALUES (2, 2372);
+INSERT INTO `sys_role_menu` VALUES (2, 2373);
+INSERT INTO `sys_role_menu` VALUES (2, 2374);
+INSERT INTO `sys_role_menu` VALUES (2, 2375);
+INSERT INTO `sys_role_menu` VALUES (2, 2376);
+INSERT INTO `sys_role_menu` VALUES (2, 2377);
+INSERT INTO `sys_role_menu` VALUES (2, 2378);
+INSERT INTO `sys_role_menu` VALUES (2, 2379);
+INSERT INTO `sys_role_menu` VALUES (2, 2380);
+INSERT INTO `sys_role_menu` VALUES (2, 2381);
+INSERT INTO `sys_role_menu` VALUES (2, 2382);
+INSERT INTO `sys_role_menu` VALUES (2, 2383);
+INSERT INTO `sys_role_menu` VALUES (2, 2384);
+INSERT INTO `sys_role_menu` VALUES (2, 2385);
+INSERT INTO `sys_role_menu` VALUES (2, 2386);
+INSERT INTO `sys_role_menu` VALUES (2, 2387);
+INSERT INTO `sys_role_menu` VALUES (2, 2388);
+INSERT INTO `sys_role_menu` VALUES (2, 2389);
+INSERT INTO `sys_role_menu` VALUES (2, 2390);
+INSERT INTO `sys_role_menu` VALUES (2, 2391);
+INSERT INTO `sys_role_menu` VALUES (2, 2392);
+INSERT INTO `sys_role_menu` VALUES (2, 2393);
+INSERT INTO `sys_role_menu` VALUES (2, 2394);
+INSERT INTO `sys_role_menu` VALUES (2, 2395);
+INSERT INTO `sys_role_menu` VALUES (2, 2396);
+INSERT INTO `sys_role_menu` VALUES (2, 2397);
+INSERT INTO `sys_role_menu` VALUES (2, 2398);
+INSERT INTO `sys_role_menu` VALUES (2, 2399);
+INSERT INTO `sys_role_menu` VALUES (2, 2400);
+INSERT INTO `sys_role_menu` VALUES (2, 2401);
+INSERT INTO `sys_role_menu` VALUES (2, 2402);
+INSERT INTO `sys_role_menu` VALUES (2, 2403);
+INSERT INTO `sys_role_menu` VALUES (2, 2404);
+INSERT INTO `sys_role_menu` VALUES (2, 2405);
+INSERT INTO `sys_role_menu` VALUES (2, 2406);
+INSERT INTO `sys_role_menu` VALUES (2, 2407);
+INSERT INTO `sys_role_menu` VALUES (2, 2408);
+INSERT INTO `sys_role_menu` VALUES (2, 2409);
+INSERT INTO `sys_role_menu` VALUES (2, 2410);
+INSERT INTO `sys_role_menu` VALUES (2, 2411);
+INSERT INTO `sys_role_menu` VALUES (2, 2412);
+INSERT INTO `sys_role_menu` VALUES (2, 2413);
+INSERT INTO `sys_role_menu` VALUES (2, 2414);
+INSERT INTO `sys_role_menu` VALUES (2, 2415);
+INSERT INTO `sys_role_menu` VALUES (2, 2416);
+INSERT INTO `sys_role_menu` VALUES (2, 2417);
+INSERT INTO `sys_role_menu` VALUES (2, 2418);
+INSERT INTO `sys_role_menu` VALUES (2, 2419);
+INSERT INTO `sys_role_menu` VALUES (2, 2420);
+INSERT INTO `sys_role_menu` VALUES (2, 2421);
+INSERT INTO `sys_role_menu` VALUES (2, 2422);
+INSERT INTO `sys_role_menu` VALUES (2, 2423);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1403,7 +1538,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'gd@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2018-03-16 11:33:00', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'gd@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2018-03-16 11:33:00', 'admin', '2018-03-16 11:33:00', 'ry', '2018-03-16 11:33:00', '测试员');
-INSERT INTO `sys_user` VALUES (3, 102, 'zhangsan', '火云邪神', '00', 'gd@gmail.com', '11234567891', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '', NULL, '', NULL, '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (3, 102, 'zhangsan', '火云邪神', '00', 'gd@gmail.com', '13212341234', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '', NULL, '', NULL, 'admin', '2020-09-20 20:52:31', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -1420,6 +1555,7 @@ CREATE TABLE `sys_user_post`  (
 -- ----------------------------
 INSERT INTO `sys_user_post` VALUES (1, 1);
 INSERT INTO `sys_user_post` VALUES (2, 2);
+INSERT INTO `sys_user_post` VALUES (3, 4);
 
 -- ----------------------------
 -- Table structure for sys_user_role

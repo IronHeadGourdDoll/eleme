@@ -21,7 +21,7 @@
 
 ​		Spring、SpringBoot，Mybatis-plus、MySQL、Redis、Swagger、undertow
 
-3.运行配置
+## 3.运行配置
 
 前端：1.npm install
 
