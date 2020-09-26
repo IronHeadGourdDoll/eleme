@@ -27,7 +27,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("el_order")
+@TableName(value = "el_order",resultMap = "ElOrderResult")
 public class ElOrder implements Serializable {
 
 private static final long serialVersionUID=1L;
@@ -96,4 +96,8 @@ private static final long serialVersionUID=1L;
     /** 发票 */
     @Excel(name = "发票")
     private String invoice;
+
+    /** 地址 */
+    @TableField(exist = false)
+    private ElAddress address;
 }

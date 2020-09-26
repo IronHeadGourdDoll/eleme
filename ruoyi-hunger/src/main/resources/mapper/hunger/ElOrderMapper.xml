@@ -20,6 +20,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="addressId"    column="address_id"    />
         <result property="endTime"    column="end_time"    />
         <result property="invoice"    column="invoice"    />
+        <collection property="address" column="{sid=address_id}" select="findByAddressId"/>
     </resultMap>
+
+    <select id="findByAddressId" resultType="com.ruoyi.hunger.domain.ElAddress" >
+        select a.*
+        from el_address a
+        where a.id=#{sid}
+    </select>
+
+<!--    <select id="findAll" resultMap="ElOrderResult">-->
+<!--        select * from el_order-->
+<!--    </select>-->
 
 </mapper>

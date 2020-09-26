@@ -3,6 +3,8 @@ package com.ruoyi.hunger.service;
 import com.ruoyi.hunger.domain.ElOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 订单总Service接口
  *
@@ -11,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IElOrderService extends IService<ElOrder> {
 
+//    List<ElOrder> findAll();
 }

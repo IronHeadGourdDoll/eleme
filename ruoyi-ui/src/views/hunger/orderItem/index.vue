@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="支付金额" prop="orderId">
+      <el-form-item label="订单id" prop="orderId">
         <el-input
           v-model="queryParams.orderId"
-          placeholder="请输入支付金额"
+          placeholder="订单id"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="支付金额" prop="foodId">
+      <el-form-item label="食品id" prop="foodId">
         <el-input
           v-model="queryParams.foodId"
-          placeholder="请输入支付金额"
+          placeholder="请输入食品id"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -132,9 +132,9 @@
 
     <el-table v-loading="loading" :data="orderItemList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="支付金额" align="center" prop="id" v-if="false"/>
-      <el-table-column label="支付金额" align="center" prop="orderId" />
-      <el-table-column label="支付金额" align="center" prop="foodId" />
+      <el-table-column label="id" align="center" prop="id" v-if="false"/>
+      <el-table-column label="订单id" align="center" prop="orderId" />
+      <el-table-column label="食品id" align="center" prop="foodId" />
       <el-table-column label="商品名字" align="center" prop="name" />
       <el-table-column label="商品件数" align="center" prop="totalCount" />
       <el-table-column label="单价" align="center" prop="foodPrice" />
@@ -161,7 +161,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -253,10 +253,10 @@ export default {
       // 表单校验
       rules: {
         orderId: [
-          { required: true, message: "支付金额不能为空", trigger: "blur" }
+          { required: true, message: "订单id不能为空", trigger: "blur" }
         ],
         foodId: [
-          { required: true, message: "支付金额不能为空", trigger: "blur" }
+          { required: true, message: "食品id不能为空", trigger: "blur" }
         ],
       }
     };

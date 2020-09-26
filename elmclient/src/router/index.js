@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
-import BusinessList from '../views/BusinessList.vue'
-import BusinessInfo from '../views/BusinessInfo.vue'
+import Find from '../views/Find.vue'
+import ShopList from '../views/ShopList.vue'
+import ShopInfo from '../views/ShopInfo.vue'
 import Login from '../views/Login.vue'
 import Orders from '../views/Orders.vue'
 import UserAddress from '../views/UserAddress.vue'
@@ -11,6 +12,8 @@ import OrderList from '../views/OrderList.vue'
 import AddUserAddress from '../views/AddUserAddress.vue'
 import EditUserAddress from '../views/EditUserAddress.vue'
 import Register from '../views/Register.vue'
+import Mine from '../views/Mine.vue'
+import Cart from '../views/Cart.vue'
 
 Vue.use(VueRouter)
 
@@ -23,13 +26,17 @@ const routes = [{
 		name: 'Index',
 		component: Index
 	}, {
-		path: '/businessList',
-		name: 'BusinessList',
-		component: BusinessList
+		path: '/find',
+		name: 'Find',
+		component: Find
+	},{
+		path: '/shopList',
+		name: 'ShopList',
+		component: ShopList
 	}, {
-		path: '/businessInfo',
-		name: 'BusinessInfo',
-		component: BusinessInfo
+		path: '/shopInfo/:id',
+		name: 'ShopInfo',
+		component: ShopInfo
 	}, {
 		path: '/login',
 		name: 'Login',
@@ -62,6 +69,14 @@ const routes = [{
 		path: '/register',
 		name: 'Register',
 		component: Register
+	}, {
+		path: '/mine',
+		name: 'Mine',
+		component: Mine
+	}, {
+		path: '/cart',
+		name: 'Cart',
+		component: Cart
 	}
 
 ]

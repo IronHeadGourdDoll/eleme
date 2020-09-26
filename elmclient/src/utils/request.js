@@ -20,7 +20,7 @@ service.interceptors.request.use(config => {
   const isToken = (config.headers || {}).isToken === false
   if (getToken() && !isToken) { // 从vuex存储中获得数据
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-    console.log("request token:" + getToken())
+    // console.log("request token:" + getToken())
   }
   return config
 }, error => {

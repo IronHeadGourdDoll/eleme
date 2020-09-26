@@ -32,7 +32,7 @@
 	import { listFood, getFood, delFood, addFood, updateFood, exportFood } from "@/api/food";
 	
 	export default{
-		name:'BusinessList',
+		name:'ShopList',
 		data(){
 			return {
 				orderTypeId: this.$route.query.orderTypeId,
@@ -86,8 +86,11 @@
 					console.error(error);
 				});
 			},
-			toBusinessInfo(businessId){
-				this.$router.push({path:'/businessInfo',query:{businessId:businessId}});
+			toShopInfo(businessId){
+				this.$router.push({
+						path:'/ShopInfo',
+						query:{businessId:businessId}
+					});
 			}
 		}
 	}

@@ -20,7 +20,16 @@ export function getOrderItem(id) {
 // 新增订单详情
 export function addOrderItem(data) {
   return request({
-    url: '/hunger/orderItem',
+    url: '/hunger/orderItem/add',
+    method: 'post',
+    data: data
+  })
+}
+
+// 新增订单详情
+export function addOrderItems(data) {
+  return request({
+    url: '/hunger/orderItem/adds',
     method: 'post',
     data: data
   })

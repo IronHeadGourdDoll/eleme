@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.hunger.service.IElCartItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 public class ElCartController extends BaseController {
 
     private final IElCartService iElCartService;
+    private final IElCartItemService iElCartItemService;
 
     /**
      * 查询购物车列表
@@ -90,12 +92,12 @@ public class ElCartController extends BaseController {
     }
 
     /**
-     * 新增购物车
+     * 新增购物车自定义
      */
     @PreAuthorize("@ss.hasPermi('hunger:cart:add')" )
     @Log(title = "购物车" , businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody ElCart elCart) {
+    public AjaxResult addCoustom(@RequestBody ElCart elCart) {
         return toAjax(iElCartService.save(elCart) ? 1 : 0);
     }
 

@@ -26,6 +26,14 @@ export function addCart(data) {
   })
 }
 
+export function addCartCustom(data,userName){
+  return request({
+    url: '/hunger/cart',
+    method: 'post',
+    data: data
+  })
+}
+
 // 修改购物车
 export function updateCart(data) {
   return request({

@@ -54,8 +54,8 @@ public class ElOrderItemController extends BaseController {
         if (elOrderItem.getFoodId() != null){
             lqw.eq(ElOrderItem::getFoodId ,elOrderItem.getFoodId());
         }
-        if (StringUtils.isNotBlank(elOrderItem.getName())){
-            lqw.like(ElOrderItem::getName ,elOrderItem.getName());
+        if (StringUtils.isNotBlank(elOrderItem.getFoodName())){
+            lqw.like(ElOrderItem::getFoodName ,elOrderItem.getFoodName());
         }
         if (StringUtils.isNotBlank(elOrderItem.getTotalCount())){
             lqw.eq(ElOrderItem::getTotalCount ,elOrderItem.getTotalCount());
@@ -106,9 +106,19 @@ public class ElOrderItemController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('hunger:orderItem:add')" )
     @Log(title = "订单详情" , businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping(value = "/add")
     public AjaxResult add(@RequestBody ElOrderItem elOrderItem) {
         return toAjax(iElOrderItemService.save(elOrderItem) ? 1 : 0);
+    }
+
+    /**
+     * 批量新增订单详情
+     */
+    @PreAuthorize("@ss.hasPermi('hunger:orderItem:add')" )
+    @Log(title = "订单详情" , businessType = BusinessType.INSERT)
+    @PostMapping(value = "/adds")
+    public AjaxResult adds(@RequestBody List<ElOrderItem> elOrderItems) {
+        return toAjax(iElOrderItemService.saveOrUpdateBatch(elOrderItems) ? 1 : 0);
     }
 
     /**

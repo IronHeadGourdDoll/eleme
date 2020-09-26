@@ -10,17 +10,33 @@
 		<div class="order-info">
 			<h5>订单配送至：</h5>
 			<div class="order-info-address" @click="toUserAddress">
-				<p>{{address.provinceName}}省{{address.cityName}}市{{address.countyName}}区{{address.detail}}</p>
+				<p>{{order.address.provinceName}}省{{order.address.cityName}}市{{order.address.countyName}}区{{order.address.detail}}</p>
 				<i class="fa fa-angle-right"></i>
 			</div>
 			<div>
-				<span>收件人：{{address.receiveName}}</span>
-				<span style="margin-left:50px;">收件人电话：{{address.receivePhone}}</span>
+				<span>收件人：{{order.address.receiveName}}</span>
+				<span style="margin-left:50px;">收件人电话：{{order.address.receivePhone}}</span>
 			</div>
 		</div>
 
-		<h3>{{order.name}}</h3>
+		<h3>订单编号：{{order.id}}</h3>
 		<div class="order-item">
+			<el-table :data="orderItemList">
+				<el-table-column label="商品名字" align="center" prop="foodName" />
+				<el-table-column label="商品件数" align="center" prop="totalCount" />
+				<el-table-column label="单价" align="center" prop="foodPrice" />
+				<el-table-column label="支付金额" align="center" prop="payMoney" />
+				<el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+					<template slot-scope="scope">
+					<el-button
+						size="mini"
+						type="text"
+						icon="el-icon-delete"
+						@click="handleDelete(scope.row)"
+					>删除</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
 		</div>
 
 		<!-- 合计部分 -->
@@ -28,8 +44,11 @@
 			<div class="total-left">
 				&#165;{{order.payMoney}}
 			</div>
-			<div class="total-right" @click="toPayment">
+			<div class="total-right-0" @click="toPayment" v-if="order.payStatus==0">
 				去支付
+			</div>
+			<div class="total-right-1" @click="toPayment" v-if="order.payStatus==1">
+				已支付
 			</div>
 		</div>
 	</div>
@@ -38,39 +57,36 @@
 <script>
 import { listOrder, getOrder, delOrder, addOrder, updateOrder, exportOrder } from "@/api/order";
 import { listOrderItem, getOrderItem, delOrderItem, addOrderItem, updateOrderItem, exportOrderItem } from "@/api/orderItem";
-import { listAddress, getAddress, delAddress, addAddress, updateAddress, exportAddress } from "@/api/address";
+//import { listAddress, getAddress, delAddress, addAddress, updateAddress, exportAddress } from "@/api/address";
 	export default{
 		name:'Orders',
 		data(){
 			return {
 				total: 0,
-				id: this.$route.params.id,
+				ids: [],
+				num: 1,
 				order: [],
-				address: [],
+				orderItemList: [],
 				// 查询参数
 				queryParams: {
 					pageNum: 1,
 					pageSize: 10,
-					userName: null,
-					createdTime: null,
+					orderId: this.$route.params.id,
+					foodId: null,
+					foodName: null,
 					totalCount: null,
+					foodPrice: null,
 					totalPrice: null,
 					preMoney: null,
 					postFee: null,
-					payMoney: null,
-					payStatus: null,
-					payType: null,
-					consignTime: null,
-					arriveTime: null,
-					addressId: null,
-					endTime: null,
-					invoice: null
+					payMoney: null
 				},
 			}
 		},
 		created() {
-			//查询订单详细内容
-			this.getDetail();	
+			//初始化本页数据
+			this.findOrderOne();
+			this.getList();
 			//查询当前商家
 			
 			//查询当前用户在购物车中的当前商家食品列表
@@ -92,25 +108,48 @@ import { listAddress, getAddress, delAddress, addAddress, updateAddress, exportA
 			}
 		},
 		methods:{
-			getDetail(){
-				getOrder(this.id).then(response => { // 查询订单详情
+			// 通过id查订单
+			findOrderOne(){
+				getOrder(this.queryParams.orderId).then(response => {
 					this.order = response.data;
-					console.log("id:" +this.id);
-					console.log("order:" +this.order);
-				}).then(response => {
-					this.findAddress(this.order.addressId) // 查询订单地址
 				});
 			},
+			// 查询orderItemList
+			getList() {
+				listOrderItem(this.queryParams).then(response => {
+					this.orderItemList = response.rows;
+				});
+			},
+			// 查询地址详情
 			findAddress(id){
 				getAddress(id).then(response => {
 					this.address = response.data;
 				});
 			},
+			// 去地址详情界面
 			toUserAddress(){
 				
 			},
+			// 去支付
 			toPayment(){
-				
+				this.$router.push({path:'/orderList'});
+			},
+			// 删除
+			handleDelete(row) {
+				const ids = row.id || this.ids;
+				this.$confirm('是否确认删除商品为"' + row.foodName + '"?', "警告", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning"
+					}).then(function() {
+						return delOrderItem(ids);
+					}).then(() => {
+						this.getList();
+						this.msgSuccess("删除成功");
+					}).catch(function() {});
+			},
+			handleChange(value) {
+				console.log(value);
 			}
 		}
 	}
@@ -263,9 +302,22 @@ import { listAddress, getAddress, delAddress, addAddress, updateAddress, exportA
 		align-items: center;
 	}
 
-	.wrapper .total .total-right {
+	.wrapper .total .total-right-0 {
 		flex: 1;
 		background-color: #38CA73;
+		color: #fff;
+		font-size: 4.5vw;
+		font-weight: 700;
+		user-select: none;
+		cursor: pointer;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.wrapper .total .total-right-1 {
+		flex: 1;
+		background-color: #7c807d;
 		color: #fff;
 		font-size: 4.5vw;
 		font-weight: 700;

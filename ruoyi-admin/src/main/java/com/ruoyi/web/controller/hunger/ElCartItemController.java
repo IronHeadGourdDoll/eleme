@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.hunger.service.IElCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 购物车详情Controller
- * 
+ *  save根据id是否为null来执行insert 与update
  * @author gourddoll
  * @date 2020-09-21
  */
@@ -38,6 +39,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 public class ElCartItemController extends BaseController {
 
     private final IElCartItemService iElCartItemService;
+    private final IElCartService iElCartService;
 
     /**
      * 查询购物车详情列表
@@ -103,10 +105,24 @@ public class ElCartItemController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('hunger:cartItem:add')" )
     @Log(title = "购物车详情" , businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping(value = "/add")
     public AjaxResult add(@RequestBody ElCartItem elCartItem) {
         return toAjax(iElCartItemService.save(elCartItem) ? 1 : 0);
     }
+
+    /**
+     * 批量新增购物车详情
+     * 查询新增食品是否在购物车存在，不存在add，存在+count(submit)
+     *
+     */
+    @PreAuthorize("@ss.hasPermi('hunger:cartItem:add')" )
+    @Log(title = "购物车详情" , businessType = BusinessType.INSERT)
+    @PostMapping(value = "/adds")
+    public AjaxResult adds(@RequestBody List<ElCartItem> elCartItems) {
+        //判断是否全部执行成功，批量插入
+        return toAjax(iElCartItemService.saveOrUpdateBatch(elCartItems) ? 1 : 0);
+    }
+
 
     /**
      * 修改购物车详情
@@ -125,6 +141,16 @@ public class ElCartItemController extends BaseController {
     @Log(title = "购物车详情" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {
+        return toAjax(iElCartItemService.removeByIds(Arrays.asList(ids)) ? 1 : 0);
+    }
+
+    /**
+     * 批量删除购物车详情，接受参数为数组，可能能批量
+     */
+    @PreAuthorize("@ss.hasPermi('hunger:cartItem:remove')" )
+    @Log(title = "购物车详情" , businessType = BusinessType.DELETE)
+    @DeleteMapping("/dels" )
+    public AjaxResult removes(@PathVariable Long[] ids) {
         return toAjax(iElCartItemService.removeByIds(Arrays.asList(ids)) ? 1 : 0);
     }
 }

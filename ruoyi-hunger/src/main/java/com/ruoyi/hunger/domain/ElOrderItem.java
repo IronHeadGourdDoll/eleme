@@ -46,7 +46,7 @@ private static final long serialVersionUID=1L;
 
     /** 商品名字 */
     @Excel(name = "商品名字")
-    private String name;
+    private String foodName;
 
     /** 商品件数 */
     @Excel(name = "商品件数")

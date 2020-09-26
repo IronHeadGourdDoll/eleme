@@ -5,7 +5,7 @@
 
 
 // //除了登录、注册、首页、商家列表、商家信息之外，都需要判断是否登录
-// const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/index', '/businessList', '/businessInfo', '/']
+// const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/index', '/shopList', '/shopInfo', '/']
 
 // router.beforeEach((to, from, next) => {
 //   if (getToken()) {

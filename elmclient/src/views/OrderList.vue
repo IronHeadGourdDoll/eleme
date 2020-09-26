@@ -12,7 +12,7 @@
 			<li v-for="item in orderList"><!--v-if="item.orderList==0"-->
 				<div class="order-info" v-if="item.payStatus==0">
 					<p>
-						订单id：{{item.id}}
+						订单编号：{{item.id}}
 						<i class="fa fa-caret-down" @click="toDetail(item.id)"></i>
 					</p>
 					<div class="order-info-right">
@@ -38,7 +38,7 @@
 			<li v-for="item in orderList">
 				<div class="order-info" v-if="item.payStatus==1">
 					<p>
-						订单id：{{item.id}}
+						订单编号：{{item.id}}
 						<i class="fa fa-caret-down" @click="toDetail(item.id)"></i>
 					</p>
 					<div class="order-info-right">

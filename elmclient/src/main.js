@@ -12,6 +12,10 @@ import './permission' // permission control
 import qs from 'qs'
 
 Vue.config.productionTip = false
+// 全局挂载提示消息，elementui的组件
+Vue.prototype.msgSuccess = function (msg) {
+	this.$message({ showClose: true, message: msg, type: "success" });
+}
 
 //设置axios的基础url部分
 //axios.defaults.baseURL = 'http://localhost:8080/elm/';
@@ -21,13 +25,13 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$qs = qs;
 
 Vue.use(Element, {
-	size: Cookies.get('size') || 'medium', // set element-ui default size
+	size: 'small', // set element-ui default size
 	zIndex: 3000 
   })
 
 router.beforeEach(function(to,from,next){
 	//除了登录、注册、首页、商家列表、商家信息之外，都需要判断是否登录
-	if(!(to.path=='/'||to.path=='/index'||to.path=='/businessList'||to.path=='/businessInfo'||to.path=='/login'||to.path=='/register')){
+	if(!(to.path=='/'||to.path=='/index'||to.path=='/find'||to.path=='/shopList'||to.path=='/shopInfo'||to.path=='/login'||to.path=='/register')){
 		if(getToken()==null){
 			router.push('/login');
 			location.reload();

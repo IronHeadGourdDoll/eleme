@@ -4,7 +4,7 @@
 			<i class="fa fa-home"></i>
 			<p>首页</p>
 		</li>
-		<li>
+		<li @click="toFind">
 			<i class="fa fa-compass"></i>
 			<p>发现</p>
 		</li>
@@ -12,7 +12,7 @@
 			<i class="fa fa-file-text-o"></i>
 			<p>订单</p>
 		</li>
-		<li>
+		<li @click="toMine">
 			<i class="fa fa-user-o"></i>
 			<p>我的</p>
 		</li>
@@ -28,6 +28,12 @@
 			},
 			toOrderList(){
 				this.$router.push({path:'/orderList'});
+			},
+			toFind(){
+				this.$router.push({path:'/find'});
+			},
+			toMine(){
+				this.$router.push({path:'/mine'});
 			}
 		}
 	}
