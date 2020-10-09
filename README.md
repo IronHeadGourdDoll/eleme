@@ -7,9 +7,9 @@
 <img src="eleme.assets\订单列表.png" alt="订单列表"  />
 <img src="eleme.assets\订单详情.png" alt="订单详情"  />
 
-![后台首页](eleme.assets\后台首页.png)
+![后台首页](src="eleme.assets\后台首页.png" alt="后台首页"  /)
 
-![管理_item](eleme.assets\管理_item.png)
+![管理_item](src="eleme.assets\管理_item.png" alt="管理_item"  /)
 
 ## 2.项目技术
 
